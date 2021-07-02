@@ -1,11 +1,11 @@
 # Setup
-title: Not Pure Poole
-description: A simple, beautiful, and powerful Jekyll theme for blogs
-url: https://vszhub.github.io
-avatar: /avatar.jpeg
+title: Amoeric Blogs
+description: 金行慢供威的高雄 rails 工程師
+url: https://amoeric.github.io/
+avatar: /avatar.jpg
 paginate: 5
 permalink: pretty
-cover_image: /bg.jpeg
+cover_image: /bg.jpg
 
 # Gems
 plugins:
@@ -29,16 +29,15 @@ exclude:
 
 # Optimize Jekyl SEO Tag
 twitter:
-  username: vszhub
-  card: summary
+  username:
+  card:
 logo: logo.png
 social:
-  name: Songzi Vong
+  name: Eric Syu
   links:
-    - https://twitter.com/vszhub
-    - https://github.com/vszhub
+    - https://github.com/amoeric
 google_site_verification: xxxxx
-lang: en
+lang: zh-TW
 
 sass:
   sass_dir: _sass
@@ -54,6 +53,6 @@ sass:
 
 # Specify the author for blog posts
 author:
-  name: Songzi Vong
-  url: https://github.com/vszhub/
-  email: vszhub@gmail.com
+  name: Eric Syu
+  url: https://github.com/amoeric/
+  email: xeriok02390@gmail.com
