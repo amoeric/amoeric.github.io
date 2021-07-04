@@ -63,7 +63,7 @@ rails server
 ### 後記
 如果對這個 gem 有興趣的話，[這裡提供](https://awesomeopensource.com/projects/activeadmin)支援 active_admin 的延伸 gem 可以做使用。  
   
-  
+---
 ### 參考文章
 * [官方gem](https://github.com/activeadmin/activeadmin)
 * [官方doc](https://activeadmin.info/0-installation.html)
