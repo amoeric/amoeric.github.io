@@ -1,0 +1,244 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link type="application/atom+xml" rel="alternate" href="https://amoeric.github.io//feed.xml" title="Amoeric" />
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>如何在 rails 6 中使用 webpack | Amoeric</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="如何在 rails 6 中使用 webpack" />
+<meta name="author" content="Amoeric" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="本人對 webpack 接觸機會不多，之前也只有在寫活動專案才會用 rails 5 的版本下安裝 webpack (拿來用 Vue)，然而 rails 6 開始就把 webpack 當作預設工具，讓效能更加提升。" />
+<meta property="og:description" content="本人對 webpack 接觸機會不多，之前也只有在寫活動專案才會用 rails 5 的版本下安裝 webpack (拿來用 Vue)，然而 rails 6 開始就把 webpack 當作預設工具，讓效能更加提升。" />
+<link rel="canonical" href="https://amoeric.github.io//2020/09/08/rails-webpack-folder/" />
+<meta property="og:url" content="https://amoeric.github.io//2020/09/08/rails-webpack-folder/" />
+<meta property="og:site_name" content="Amoeric" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-08T14:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="如何在 rails 6 中使用 webpack" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Amoeric" />
+<script type="application/ld+json">
+{"description":"本人對 webpack 接觸機會不多，之前也只有在寫活動專案才會用 rails 5 的版本下安裝 webpack (拿來用 Vue)，然而 rails 6 開始就把 webpack 當作預設工具，讓效能更加提升。","url":"https://amoeric.github.io//2020/09/08/rails-webpack-folder/","@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://amoeric.github.io//path/to/image"},"name":"Amoeric"},"headline":"如何在 rails 6 中使用 webpack","dateModified":"2020-09-08T14:00:00+00:00","datePublished":"2020-09-08T14:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://amoeric.github.io//2020/09/08/rails-webpack-folder/"},"author":{"@type":"Person","name":"Amoeric"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="icon" href="/assets/images/favicon.png" type="image/ico" />
+    <link rel="stylesheet" href="/css/site.css">
+  </head>
+  <body>
+    <nav class="flex items-center justify-between flex-wrap bg-black p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+    <a href="/"><span class="font-semibold text-xl tracking-tight">Amoeric</span></a>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded border-white text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="/about" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        About
+      </a>
+      <a href="/tags" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        Tags
+      </a>
+    </div>
+
+  </div>
+</nav>
+    <section class="">
+      
+<div class="container flex flex-wrap justify-center mx-auto">
+  <div class="w-11/12 lg:w-6/12 mb-4">
+    <h2 class="text-2xl lg:text-4xl">如何在 rails 6 中使用 webpack</h2>
+    <p class="my-2">
+      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+      
+    </p>
+    
+      
+      <a href="https://amoeric.github.io//tag/rails"> <span class="tag-mark inline-block my-2"> rails </span></a>
+      
+      <a href="https://amoeric.github.io//tag/webpack"> <span class="tag-mark inline-block my-2"> webpack </span></a>
+      
+    
+  </div>
+
+  <div class="lg:w-12/12 p-1"></div>
+  <div class="prose w-10/12 lg:w-6/12 mb-4"><p>本人對 webpack 接觸機會不多，之前也只有在寫活動專案才會用 rails 5 的版本下安裝 webpack (拿來用 Vue)，然而 rails 6 開始就把 webpack 當作預設工具，讓效能更加提升。</p>
+
+<p>本文將會介紹 webpack 是什麼、為什麼要用、rails 中如何使用 webpack</p>
+
+<h1 id="webpack-是什麼">webpack 是什麼？</h1>
+<blockquote>
+  <p>Webpack 是一個開源的前端打包工具。Webpack 提供了前端開發缺乏的模組化開發方式，將各種靜態資源視為模組，並從它生成最佳化過的程式碼。 &lt;- from wiki</p>
+</blockquote>
+
+<h1 id="為什麼需要用-webpack">為什麼需要用 webpack?</h1>
+<p>因為 webpack 有以下優點可以使專案速度更加提升</p>
+<ul>
+  <li>將任何類型的檔案通通打包給 js，讓 ruby 負擔更少。</li>
+  <li>包含任何類型的檔案到 JavaScript
+    <ul>
+      <li>ES6、SCSS、CSS、Images、JSON、Coffeescript、LESS…等</li>
+    </ul>
+  </li>
+  <li>將以上的東西通通打包，轉換成瀏覽器看得懂的語言。</li>
+</ul>
+
+<h1 id="了解了-webpack-優點後接著實際在-rails-中使用">了解了 Webpack 優點後，接著實際在 rails 中使用</h1>
+<h1 id="1新增-rails-6-專案">1.新增 rails 6 專案</h1>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"> <span class="n">rails</span> <span class="n">new</span> <span class="n">trbweb</span> </code></pre></figure>
+
+<p>你會發現在 <code class="language-plaintext highlighter-rouge">console</code> 裡面多了個 <code class="language-plaintext highlighter-rouge">yarn</code> 這個東西在幫我們安裝套件，而相關的檔案會放在 <code class="language-plaintext highlighter-rouge">node_modules</code> 這個資料夾。 專案裡面該裝什麼東西都寫在 <code class="language-plaintext highlighter-rouge">package.json</code> ，然而專案是不會把 <code class="language-plaintext highlighter-rouge">node_modules</code> 這個資料夾 <code class="language-plaintext highlighter-rouge">commit</code> 上去的，而是會去看 <code class="language-plaintext highlighter-rouge">package.json</code> 來安裝對應的套件。</p>
+
+<p>安裝好後，看 <code class="language-plaintext highlighter-rouge">application.html.erb</code> 會發現</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="sx">%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %&gt;</span></code></pre></figure>
+
+<p>已經被換成</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="sx">%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %&gt;</span></code></pre></figure>
+
+<p>正式宣告 <code class="language-plaintext highlighter-rouge">js</code> 的部分由 <code class="language-plaintext highlighter-rouge">webpack</code> 處理。</p>
+
+<h1 id="2安裝-foreman">2.安裝 <code class="language-plaintext highlighter-rouge">foreman</code></h1>
+
+<p>要邊跑 <code class="language-plaintext highlighter-rouge">rails</code> 邊執行 <code class="language-plaintext highlighter-rouge">webpack</code> 還需要再安裝 <code class="language-plaintext highlighter-rouge">foreman</code> 來處理</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="n">gem</span> <span class="s1">'foreman'</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>建立 <code class="language-plaintext highlighter-rouge">Profile</code> 檔案在專案中(與 <code class="language-plaintext highlighter-rouge">Gemfile</code> 同層)</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">  <span class="c1">#Profile</span>
+  <span class="ss">web: </span><span class="n">bin</span><span class="o">/</span><span class="n">rails</span> <span class="n">server</span> <span class="o">-</span><span class="nb">p</span> <span class="mi">3000</span>
+  <span class="ss">webpacker: </span><span class="n">bin</span><span class="o">/</span><span class="n">webpack</span><span class="o">-</span><span class="n">dev</span><span class="o">-</span><span class="n">server</span></code></pre></figure>
+
+<p>接著只要把以往啟動的指令從 <code class="language-plaintext highlighter-rouge">rails s</code> 改成 <code class="language-plaintext highlighter-rouge">foreman start</code> 就可以囉!</p>
+
+<h1 id="3-讓-webpack-處理-css">3. 讓 Webpack 處理 css</h1>
+<p>其實 webpack 也可以幫忙處理 <code class="language-plaintext highlighter-rouge">css</code> 的，只需要底下步驟就可以了。</p>
+
+<ul>
+  <li>
+    <h3 id="首先安裝-bootstrap-jquery-popperjs">首先安裝 bootstrap jquery popper.js</h3>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">yarn</span> <span class="nx">add</span> <span class="nx">bootstrap</span> <span class="nx">jquery</span> <span class="nx">popper</span><span class="p">.</span><span class="nx">js</span></code></pre></figure>
+
+<ul>
+  <li>
+    <h3 id="接著把-jquerypopper-設定在-environmentjs-中">接著把 jquery、popper 設定在 environment.js 中</h3>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#environment.js</span>
+<span class="n">const</span> <span class="p">{</span> <span class="n">environment</span> <span class="p">}</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">'@rails/webpacker'</span><span class="p">)</span>
+
+<span class="n">const</span> <span class="n">webpack</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s1">'webpack'</span><span class="p">)</span>
+<span class="n">environment</span><span class="p">.</span><span class="nf">plugins</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="s1">'Provide'</span><span class="p">,</span>
+  <span class="n">new</span> <span class="n">webpack</span><span class="o">.</span><span class="no">ProvidePlugin</span><span class="p">({</span>
+    <span class="vg">$:</span> <span class="s1">'jquery'</span><span class="p">,</span>
+    <span class="ss">jQuery: </span><span class="s1">'jquery'</span><span class="p">,</span>
+    <span class="no">Popper</span><span class="p">:</span> <span class="p">[</span><span class="s1">'popper.js'</span><span class="p">,</span> <span class="s1">'default'</span><span class="p">]</span>
+  <span class="p">})</span>
+<span class="p">)</span>
+
+<span class="n">module</span><span class="p">.</span><span class="nf">exports</span> <span class="o">=</span> <span class="n">environment</span></code></pre></figure>
+
+<ul>
+  <li>
+    <h3 id="jscss-分類">js、css 分類</h3>
+    <p>首先在 <code class="language-plaintext highlighter-rouge">app/javascript</code> 下分別建立 <code class="language-plaintext highlighter-rouge">stylesheets</code>、 <code class="language-plaintext highlighter-rouge">js</code> 資料夾，建立成功後會跟下面結構一樣。</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">javascript</span>
+  <span class="o">-</span>  <span class="n">js</span>
+  <span class="o">-</span>  <span class="n">channels</span>
+  <span class="o">-</span>  <span class="n">packs</span>
+  <span class="o">-</span>  <span class="n">stylesheets</span></code></pre></figure>
+
+<ul>
+  <li>
+    <h3 id="require">require</h3>
+    <p>光是這樣還不夠，還需要在 <code class="language-plaintext highlighter-rouge">packs/application.js</code> 中， require <code class="language-plaintext highlighter-rouge">stylesheets</code>、<code class="language-plaintext highlighter-rouge">js</code> 兩個資料夾</p>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">require</span><span class="p">(</span><span class="s2">"stylesheets"</span><span class="p">)</span>
+<span class="nb">require</span><span class="p">(</span><span class="s2">"js"</span><span class="p">)</span></code></pre></figure>
+
+<ul>
+  <li>
+    <h3 id="require-後預設會找資料夾底下的-index檔"><code class="language-plaintext highlighter-rouge">require</code> 後預設會找資料夾底下的 <code class="language-plaintext highlighter-rouge">index</code>檔</h3>
+  </li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#stylesheets/index.scss</span>
+<span class="vi">@import</span> <span class="s2">"~bootstrap/scss/bootstrap"</span><span class="p">;</span>
+<span class="c1">#index.html.erb</span>
+<span class="o">&lt;</span><span class="n">div</span> <span class="k">class</span><span class="o">=</span><span class="s2">"alert alert-primary"</span> <span class="n">role</span><span class="o">=</span><span class="s2">"alert"</span><span class="o">&gt;</span>
+  <span class="no">A</span> <span class="n">simple</span> <span class="n">primary</span> <span class="n">alert</span><span class="err">—</span><span class="n">check</span> <span class="n">it</span> <span class="n">out!</span>
+<span class="o">&lt;</span><span class="sr">/div&gt;</span></code></pre></figure>
+
+<p>如果沒意外就會看到 <code class="language-plaintext highlighter-rouge">bootstrap</code> 成功套用拉～</p>
+
+<ul>
+  <li>
+    <h3 id="命名">命名</h3>
+    <p>此時追求完美的你是不是覺得哪邊怪怪的？ 由於 <code class="language-plaintext highlighter-rouge">app/javascript</code> 已經不是原本的形狀了，是不是改名成 <code class="language-plaintext highlighter-rouge">frontend</code> 比較合適？
+其實是可以的，改名後只需要修改 <code class="language-plaintext highlighter-rouge">webpack.yml</code> 中的 source_path ， 把 <code class="language-plaintext highlighter-rouge">app/javascript</code> 換成 <code class="language-plaintext highlighter-rouge">app/frontend</code> 就可以囉！<br />
+舒服。</p>
+  </li>
+</ul>
+
+<h1 id="總結">總結</h1>
+<p>該選擇 Sprockets 還是 Webpacker ?<br />
+如果專案不大，而且只需要用 <code class="language-plaintext highlighter-rouge">js</code> 功能，那就可以不用用到 <code class="language-plaintext highlighter-rouge">webpack</code> 。相反的，如果專案大的話可以試著裝上 <code class="language-plaintext highlighter-rouge">webpacker</code> ，讓前端的東西都給 <code class="language-plaintext highlighter-rouge">webpack</code> 處理，如果你手邊有大型專案的話，慢慢的把 <code class="language-plaintext highlighter-rouge">app/assets</code> 都搬來讓 <code class="language-plaintext highlighter-rouge">webpack</code> 處理吧！</p>
+
+<h1 id="參考文章">參考文章</h1>
+<ul>
+  <li><a href="https://medium.com/i-am-mike/%E4%BB%80%E9%BA%BC%E6%98%AFwebpack-%E4%BD%A0%E9%9C%80%E8%A6%81webpack%E5%97%8E-2d8f9658241d">什麼是webpack</a></li>
+  <li><a href="https://kaochenlong.com/2019/11/21/webpacker-with-rails-part-1/">如何在 Rails 使用 Webpacker</a></li>
+  <li><a href="https://medium.com/@adrian_teh/ruby-on-rails-6-with-webpacker-and-bootstrap-step-by-step-guide-41b52ef4081f">Ruby on Rails 6 with Webpacker and Bootstrap</a></li>
+  <li><a href="https://medium.com/lynn-%E7%9A%84%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/rails-%E6%96%B0%E6%89%8B%E6%9D%91-webpack-%E8%88%87-webpacker-%E5%9C%A8-rails-%E7%9A%84%E9%81%8B%E4%BD%9C%E6%96%B9%E5%BC%8F-b06cb5a84971">Webpack 與 Webpacker 在 Rails 的運作方式</a></li>
+</ul>
+
+</div>
+</div>
+    </section>
+
+    
+      <script>
+  // Copy your tracking snippet into this block!
+</script>
+
+
+    
+    <footer class="w-max bg-gray-200 bg-opacity-50 py-2">
+  <div class="w-8/12 mx-auto flex flex-wrap">
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <ul class="contact-list">
+        <li class="p-name">AmoEric</li>
+        <li><a class="u-email" href="mailto:xeriok02390@gmail.com">xeriok02390@gmail.com</a></li>
+	      <li><a href="https://github.com/amoeric">github <span class="username">amoeric</span></a></li>
+      </ul>
+    </div>
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <p>嗨！目前寫 Ruby On Rails，會在這邊紀錄開發時遇到的問題</p>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
+

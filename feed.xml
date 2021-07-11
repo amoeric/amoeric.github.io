@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://amoeric.github.io//feed.xml" rel="self" type="application/atom+xml" /><link href="https://amoeric.github.io//" rel="alternate" type="text/html" /><updated>2021-07-11T14:22:23+00:00</updated><id>https://amoeric.github.io//feed.xml</id><title type="html">Amoeric</title><subtitle>嗨！目前寫 Ruby On Rails，會在這邊紀錄開發時遇到的問題</subtitle><author><name>Amoeric</name></author><entry><title type="html">how to skip callback in rspec</title><link href="https://amoeric.github.io//2021/06/03/factorybot-skip-callback/" rel="alternate" type="text/html" title="how to skip callback in rspec" /><published>2021-06-03T08:50:00+00:00</published><updated>2021-06-03T08:50:00+00:00</updated><id>https://amoeric.github.io//2021/06/03/factorybot-skip-callback</id><content type="html" xml:base="https://amoeric.github.io//2021/06/03/factorybot-skip-callback/">&lt;p&gt;當寫了一個 callback 導致整個 spec 爆炸時，可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;skip_callback&lt;/code&gt; method 讓 spec 恢復正常&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# model&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;after_commit&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:generate_zip&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#factory&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:build&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;skip_callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:commit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:after&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:generate_zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;raise: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果要針對該 callback 進行測試時，可以&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# factory&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;factory&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:post_with_generate_zip&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:generate_zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;用法&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:post_with_generate_zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;參考資料&quot;&gt;參考資料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/thoughtbot/factory_bot/issues/931&quot;&gt;https://github.com/thoughtbot/factory_bot/issues/931&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.codenong.com/8751175/&quot;&gt;https://www.codenong.com/8751175/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Amoeric</name></author><category term="rails" /><category term="factorybot" /><category term="skip_callback" /><summary type="html">當寫了一個 callback 導致整個 spec 爆炸時，可以使用 skip_callback method 讓 spec 恢復正常</summary></entry><entry><title type="html">use nesteds_form in rails</title><link href="https://amoeric.github.io//2021/06/03/rails-nested_form/" rel="alternate" type="text/html" title="use nesteds_form in rails" /><published>2021-06-03T08:00:00+00:00</published><updated>2021-06-03T08:00:00+00:00</updated><id>https://amoeric.github.io//2021/06/03/rails-nested_form</id><content type="html" xml:base="https://amoeric.github.io//2021/06/03/rails-nested_form/">&lt;p&gt;在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。&lt;/p&gt;
+
+&lt;h4 id=&quot;model&quot;&gt;Model&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;把需要一併新增的關聯物件設定 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;accepts_nested_attributes_for&lt;/code&gt; ， controller 就可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;addresses_attributes&lt;/code&gt; params ，一併將address新增。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Person&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;has_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;inverse_of: :person&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;accepts_nested_attributes_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:addresses&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Address&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;ApplicationRecord&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;belongs_to&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:person&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;form&quot;&gt;Form&lt;/h3&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= form_with model: @person do |form| %&amp;gt;
+  Addresses:
+  &amp;lt;ul&amp;gt;
+    &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;form&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;fields_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:addresses&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;addresses_form&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;%&amp;gt;
+      &amp;lt;li&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= addresses_form.label :kind %&amp;gt;
+        &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addresses_form&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;text_field&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:kind&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;&lt;/span&gt;
+
+        &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= addresses_form.label :street %&amp;gt;
+        &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addresses_form&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;text_field&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:street&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/li&amp;gt;
+    &amp;lt;% end %&amp;gt;
+  &amp;lt;/u&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;% end &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;params&quot;&gt;Params&lt;/h4&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;'person'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'John Doe'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'addresses_attributes'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;s1&quot;&gt;'0'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'kind'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Home'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'street'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'221b Baker Street'&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;s1&quot;&gt;'1'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'kind'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Office'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;s1&quot;&gt;'street'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'31 Spooner Street'&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;controller&quot;&gt;controller&lt;/h4&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;address_attributes: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:kind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:street&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;這樣就可以在新增 person 時一併新增 address 了！可以多多使用這種方式省下不必要的 model 。&lt;/p&gt;
+
+&lt;p&gt;另外， &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;accepts_nested_attributes_for&lt;/code&gt;  還提供了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;allow_destroy: true&lt;/code&gt; 方式能夠刪除 address。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;model-1&quot;&gt;model&lt;/h4&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;略&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;accepts_nested_attributes_for&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:addresses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;allow_destroy: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;略&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;form-1&quot;&gt;form&lt;/h4&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= form.fields_for :addresses do |addresses_form| %&amp;gt;
+      &amp;lt;li&amp;gt;
+        &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addresses_form&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;check_box&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:_destroy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/li&amp;gt;
+    &amp;lt;% end %&amp;gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;此時觀察 params 就會發現多了一個 _destroy 的 params，因此加入 controller 的 permit 即可。&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:person&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;address_attributes: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:kind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:street&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:_destroy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;參考來源&quot;&gt;參考來源&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://guides.rubyonrails.org/form_helpers.html#nested-forms&quot;&gt;https://guides.rubyonrails.org/form_helpers.html#nested-forms&lt;/a&gt;&lt;/p&gt;</content><author><name>Amoeric</name></author><category term="rails" /><category term="nesteds_form" /><summary type="html">在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。</summary></entry><entry><title type="html">ruby-&amp;gt;File？FileUtils？Tempfile？Dir？</title><link href="https://amoeric.github.io//2021/06/03/file-fileutils-dir/" rel="alternate" type="text/html" title="ruby-&amp;gt;File？FileUtils？Tempfile？Dir？" /><published>2021-06-03T08:00:00+00:00</published><updated>2021-06-03T08:00:00+00:00</updated><id>https://amoeric.github.io//2021/06/03/file-fileutils-dir</id><content type="html" xml:base="https://amoeric.github.io//2021/06/03/file-fileutils-dir/">&lt;p&gt;FileUtils 、 File 、 Dir 、甚至還有一個 Tempfile 第一次接觸時都不知道該從何下手，使用時機是哪個？&lt;/p&gt;
+
+&lt;p&gt;本文會介紹各種常用的技巧，讓你在寫程式的時候能夠知道該用什麼處理的好。&lt;/p&gt;
+
+&lt;h4 id=&quot;fileutils-幾種常用的方法&quot;&gt;FileUtils 幾種常用的方法&lt;/h4&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;touch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;建立檔案&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;touch&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'timestamp'&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mkdir_p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;目錄不存在才建立新資料夾&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;mkdir_p&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/tmp/cat.png&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;移動檔案&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;mv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test.rb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tmp/'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;複製檔案&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'test.rb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tmp'&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;copy_entry&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;複製整個資料夾內容到&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;copy_entry&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;tmp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;new_dest&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rm_rf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;刪除資料夾&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rm_rf&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/cat/cat.png&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;刪除檔案&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;FileUtils&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;cat.png&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exist?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cat.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;file-幾種常用的方法&quot;&gt;File 幾種常用的方法&lt;/h3&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s2&quot;&gt;&quot;w&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'若有檔案則打開原檔，清空內容，從頭開始寫入。'&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;a&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'若有檔案則打開原檔，將內容加在最後面。'&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;r&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'若有檔案則打開原檔，將內容加在最前面。'&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;r+&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'讀取 / 寫入，不會主動建檔，將內容加在檔案最前面，會覆蓋原有內容，檔案必須存在)'&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;w+&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'讀取 / 寫入。同 w 功能'&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;a+&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'讀取 / 寫入。同 a 功能'&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;'在每個模式後面加上&quot;b&quot; #例如 &quot;rb&quot; 或 &quot;rb+&quot;，就可以開啟「二進位」模式'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;參考至： &lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10220270&quot;&gt;https://ithelp.ithome.com.tw/articles/10220270&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;檔案的生命週期---open-use-close&quot;&gt;檔案的生命週期 -&amp;gt; open-use-close&lt;/h3&gt;
+
+&lt;p&gt;這邊要注意的是，使用 File 時後記得把它 file.close 掉，否則不會儲存哦！&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;新建檔案&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'w'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; #&amp;lt;File:test.txt&amp;gt; &lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;開啟現有文件&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'ruby.rb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'w'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;寫入&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello world!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 寫入內容&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;關閉&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#如果檔案有寫入的話記得使用&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;使用&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;join&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;合併成路徑&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;usr&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;eric&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;usr/eric&quot;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exist?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;檔案是否存在&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;exist?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;檔案大小&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;重名&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test.txt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'test.rb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;delete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;刪除檔案&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'test.rb'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;absolute_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;絕對路徑查詢&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;absolute_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'tmp/timestamp'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/Users/eric/Desktop/code/tess/tmp/timestamp'&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;把檔案內容讀取轉成字串&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;open&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;是傳回一個檔案&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;dir-各種用法&quot;&gt;Dir 各種用法&lt;/h3&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pwd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;當前資料夾位址&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pwd&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;在當前位置建立&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;資料夾&lt;/span&gt; 
+&lt;span class=&quot;no&quot;&gt;Dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;delete&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;刪除該路徑的&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;資料夾&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+
+&lt;span class=&quot;n&quot;&gt;entries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;查詢目前資料夾底下的所有檔案及資料夾列表，回傳&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Array&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;entries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;tempfile-用法&quot;&gt;Tempfile 用法&lt;/h4&gt;
+
+&lt;p&gt;用法與 File 一樣，但其中差異性是 tempfile 並不會產生一個實體檔案，也在 close 後多了一個 unlink 來刪除 temp 檔。&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#form ruby doc&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'tempfile'&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Tempfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;path&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; A unique filename in the OS's temp directory,&lt;/span&gt;
+               &lt;span class=&quot;c1&quot;&gt;#    e.g.: &quot;/tmp/foo.24722.0&quot;&lt;/span&gt;
+               &lt;span class=&quot;c1&quot;&gt;#    This filename contains 'foo' in its basename.&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;hello world&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rewind&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; &quot;hello world&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;unlink&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# deletes the temp file&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;也因為 close 、 unlink 是必須的，所以可以&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# form ruby doc&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Tempfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# ...do something with file...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;ensure&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;unlink&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# deletes the temp file&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;參考資料&quot;&gt;參考資料&lt;/h2&gt;
+
+&lt;h4 id=&quot;file&quot;&gt;File&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;官方文件 &lt;a href=&quot;https://ruby-doc.org/core-2.5.0/File.html&quot;&gt;https://ruby-doc.org/core-2.5.0/File.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;fileutils&quot;&gt;FileUtils&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;官方文件 &lt;a href=&quot;https://www.rubydoc.info/stdlib/fileutils/FileUtils&quot;&gt;https://www.rubydoc.info/stdlib/fileutils/FileUtils&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10220270&quot;&gt;https://ithelp.ithome.com.tw/articles/10220270&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;dir&quot;&gt;Dir&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;官方文件 &lt;a href=&quot;https://ruby-doc.org/core-2.6.7/Dir.html&quot;&gt;https://ruby-doc.org/core-2.6.7/Dir.html&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ithelp.ithome.com.tw/articles/10219819&quot;&gt;https://ithelp.ithome.com.tw/articles/10219819&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;tempfile-官方&quot;&gt;Tempfile 官方&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ruby-doc.org/stdlib-2.5.3/libdoc/tempfile/rdoc/Tempfile.html&quot;&gt;https://ruby-doc.org/stdlib-2.5.3/libdoc/tempfile/rdoc/Tempfile.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Amoeric</name></author><category term="ruby" /><summary type="html">FileUtils 、 File 、 Dir 、甚至還有一個 Tempfile 第一次接觸時都不知道該從何下手，使用時機是哪個？</summary></entry><entry><title type="html">如何在 rails 中使用 jsonb 格式？</title><link href="https://amoeric.github.io//2021/05/30/how-to-use-jsonb-in-rails/" rel="alternate" type="text/html" title="如何在 rails 中使用 jsonb 格式？" /><published>2021-05-30T03:00:00+00:00</published><updated>2021-05-30T03:00:00+00:00</updated><id>https://amoeric.github.io//2021/05/30/how-to-use-jsonb-in-rails</id><content type="html" xml:base="https://amoeric.github.io//2021/05/30/how-to-use-jsonb-in-rails/">&lt;p&gt;在設計專案 DB 時，時常遇到像是地址這種一大層裡面包了多層小層的資料，如果設計 DB 時可以用大層的設計去避免掉多開很多無謂欄位是不是很好呢？&lt;/p&gt;
+
+&lt;h4 id=&quot;例如&quot;&gt;例如：&lt;/h4&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;地址： { 縣市：xxx , 鄉鎮： xxx, 區域： xxx, 街道： xx路xx號 }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;而在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PostgreSQL 9.4&lt;/code&gt; 後就引進了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jsonb&lt;/code&gt; 這個新的欄位種類實現以上的狀況。&lt;/p&gt;
+
+&lt;h4 id=&quot;json-與--jsonb-有什麼差異呢&quot;&gt;Json 與  Jsonb 有什麼差異呢？&lt;/h4&gt;
+
+&lt;p&gt;由下方連結文章的結論來說，Jsonb 因為儲存方式不同的關係，會稍微比 Json 來得慢一點。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://nandovieira.com/using-postgresql-and-jsonb-with-ruby-on-rails&quot;&gt;Using PostgreSQL and jsonb with Ruby on Rails&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;那麼在-rails-中如何使用呢&quot;&gt;那麼，在 Rails 中如何使用呢？&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&quot;migration&quot;&gt;Migration&lt;/h4&gt;
+&lt;p&gt;在這裡要注意要把欄位設定成 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jsonb&lt;/code&gt; 屬性，並給它 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index&lt;/code&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gin&lt;/code&gt;，在&lt;a href=&quot;https://docs.postgresql.tw/the-sql-language/index/index-types&quot;&gt;postgresql文件中有提到&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+GIN 索引是「反向索引」，適用於包含多個值的組合的資料值，例如陣列。反向索引包含每個組合值的單獨項目，並且可以有效地處理測試特定組合值是否存在的查詢。&lt;/blockquote&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#some_migration&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;change&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;change_table&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:posts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;bulk: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;jsonb&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;null: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;default: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;using: :gin&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;model&quot;&gt;Model&lt;/h4&gt;
+
+&lt;p&gt;只要用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rails&lt;/code&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Store&lt;/code&gt; 功能 accessors 你要的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;key&lt;/code&gt; 就好了&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;  &lt;span class=&quot;n&quot;&gt;store&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:address&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;accessors: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:town&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:city&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;form&quot;&gt;Form&lt;/h4&gt;
+
+&lt;p&gt;在表單中只需要輸入對應的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;accessors key&lt;/code&gt;就可以了&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;  &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sx&quot;&gt;%= f.collection_radio_buttons :city, ['高雄', '台北'] %&amp;gt;
+  &amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;collection_radio_buttons&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:town&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'鳳山區'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'前鎮區'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;controller&quot;&gt;Controller&lt;/h4&gt;
+
+&lt;p&gt;這邊也跟平常一樣，不需要設定&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;  &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:city&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:town&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h4 id=&quot;儲存後的呈現會像是&quot;&gt;儲存後的呈現會像是&lt;/h4&gt;
+
+&lt;p&gt;在 console 叫出 address 欄位&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;  &lt;span class=&quot;ss&quot;&gt;address: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;city&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;高雄&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;town&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;鳳山區&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;結論&quot;&gt;結論&lt;/h3&gt;
+
+&lt;p&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jsonb&lt;/code&gt; 加上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rails store&lt;/code&gt; combo 讓效率大大提升，像這類型的欄位未來如果要修改也不用再新增 migration 來新增或者修改了！&lt;/p&gt;
+
+&lt;p&gt;可喜可賀～&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;參考文章&quot;&gt;參考文章&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h4 id=&quot;jsonb&quot;&gt;jsonb&lt;/h4&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://nandovieira.com/using-postgresql-and-jsonb-with-ruby-on-rails&quot;&gt;Using PostgreSQL and jsonb with Ruby on Rails&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://melvinchng.github.io/rails/RailsJSONB.html#42-add-a-jsonb-column-to-existing-table&quot;&gt;https://melvinchng.github.io/&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h4 id=&quot;gin-index&quot;&gt;Gin index&lt;/h4&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.postgresql.org/docs/9.5/gin-intro.html&quot;&gt;postgresql.org&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h4 id=&quot;store-設定&quot;&gt;Store 設定&lt;/h4&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://ihower.tw/rails/activerecord-others.html&quot;&gt;Rails 實戰聖經&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://api.rubyonrails.org/classes/ActiveRecord/Store.html&quot;&gt;Ruby On Rails api&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Amoeric</name></author><category term="rails" /><category term="jsonb" /><category term="postgresql" /><summary type="html">在設計專案 DB 時，時常遇到像是地址這種一大層裡面包了多層小層的資料，如果設計 DB 時可以用大層的設計去避免掉多開很多無謂欄位是不是很好呢？</summary></entry><entry><title type="html">使用 Github io 建立自己的 Blog</title><link href="https://amoeric.github.io//2021/05/29/create_your_github_io/" rel="alternate" type="text/html" title="使用 Github io 建立自己的 Blog" /><published>2021-05-29T00:00:00+00:00</published><updated>2021-05-29T00:00:00+00:00</updated><id>https://amoeric.github.io//2021/05/29/create_your_github_io</id><content type="html" xml:base="https://amoeric.github.io//2021/05/29/create_your_github_io/">&lt;p&gt;想免費擁有一個屬於自己的網站的朋友有福了！
+現在可以透過 github.io 去建立一個屬於自己的網站囉&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;以下步驟參考 &lt;a href=&quot;https://gitbook.tw/chapters/github/using-github-pages.html&quot;&gt;龍哥 的 github io 建立教學&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;1-到-github-建立一個-github-專案&quot;&gt;1. 到 github 建立一個 github 專案&lt;/h2&gt;
+
+&lt;h5 id=&quot;專案名稱打上-你的github帳號githubio-建立即可&quot;&gt;專案名稱打上 &lt;strong&gt;你的github帳號.github.io&lt;/strong&gt; 建立即可&lt;/h5&gt;
+&lt;p&gt;&lt;img src=&quot;assets/images/create-github-io/create_git_repo.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;2-建立-git-資料夾&quot;&gt;2. 建立 git 資料夾&lt;/h2&gt;
+
+&lt;p&gt;在自己電腦中找個資料夾隨便建立一份檔案，並在終端機該資料夾路徑中打上&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;git init&lt;/li&gt;
+  &lt;li&gt;git add .&lt;/li&gt;
+  &lt;li&gt;git commit -m “first commit” &amp;lt;- “” 可以隨便打沒關係&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/images/create-github-io/git_init.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;3-推上建立好的-git-資料夾&quot;&gt;3. 推上建立好的 git 資料夾&lt;/h2&gt;
+
+&lt;p&gt;你的 remote 應該會長得像這樣&lt;br /&gt;
+   &lt;img src=&quot;assets/images/create-github-io/git_remote.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;再輸入就成功囉&lt;/p&gt;
+
+&lt;blockquote&gt;
+  git push origin master
+  &lt;/blockquote&gt;
+
+&lt;p&gt;推成功後輸入網址 &lt;a href=&quot;https://amoeric.github.io/&quot;&gt;https://amoeric.github.io/&lt;/a&gt; 就會看到你建立好的檔案相關畫面囉&lt;/p&gt;</content><author><name>Amoeric</name></author><category term="github" /><summary type="html">想免費擁有一個屬於自己的網站的朋友有福了！ 現在可以透過 github.io 去建立一個屬於自己的網站囉</summary></entry><entry><title type="html">My Sideprojects</title><link href="https://amoeric.github.io//2021/03/30/my-sideprojects/" rel="alternate" type="text/html" title="My Sideprojects" /><published>2021-03-30T00:00:00+00:00</published><updated>2021-03-30T00:00:00+00:00</updated><id>https://amoeric.github.io//2021/03/30/my-sideprojects</id><content type="html" xml:base="https://amoeric.github.io//2021/03/30/my-sideprojects/">&lt;h2 id=&quot;line-bot-----不知道吃什麼福星&quot;&gt;Line Bot -   不知道吃什麼福星&lt;/h2&gt;
+&lt;p&gt;由於每次吃飯都在思考要吃什麼，實在是太麻煩了！索性就用了一個 line 機器人，讓它幫我決定。&lt;/p&gt;
+
+&lt;p&gt;本作品參考&lt;a href=&quot;https://ithelp.ithome.com.tw/users/20107309/ironman/1253&quot;&gt;卡卡米大大所寫的文章&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-mission-----任務管理平台&quot;&gt;The Mission  —   任務管理平台&lt;/h2&gt;
+&lt;p&gt;本作品是「五倍紅寶石」給學員們的額外課題，是該公司內部人員必備完成的題目，目的在於掌握身為一個 Rails 工程師的基本技能。&lt;/p&gt;
+
+&lt;p&gt;學習到的技能有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;手刻devise&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;i18n&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;設定時區&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CRUD&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rspec&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;deploy&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ransack&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aasm&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kaminari&lt;/code&gt;..等等&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;a href=&quot;https://github.com/kaochenlong/5xtraining/blob/master/backend.md&quot;&gt;課程連結&lt;/a&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;a href=&quot;https://still-oasis-16053.herokuapp.com/&quot;&gt;作品連結&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&quot;/image/sideprojects/the_mission.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;</content><author><name>Amoeric</name></author><category term="sideproject" /><summary type="html">Line Bot - 不知道吃什麼福星 由於每次吃飯都在思考要吃什麼，實在是太麻煩了！索性就用了一個 line 機器人，讓它幫我決定。 本作品參考卡卡米大大所寫的文章</summary></entry><entry><title type="html">sidekiq web-ui session destroy</title><link href="https://amoeric.github.io//2020/10/28/sidekiq-web-in-router/" rel="alternate" type="text/html" title="sidekiq web-ui session destroy" /><published>2020-10-28T00:00:00+00:00</published><updated>2020-10-28T00:00:00+00:00</updated><id>https://amoeric.github.io//2020/10/28/sidekiq-web-in-router</id><content type="html" xml:base="https://amoeric.github.io//2020/10/28/sidekiq-web-in-router/">&lt;p&gt;最近用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq&lt;/code&gt; 後台頁面時遇到了一個問題&lt;br /&gt;
+在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;routes&lt;/code&gt; 中如果要使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;devise&lt;/code&gt; 限制 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq&lt;/code&gt; 的使用對象的話&lt;br /&gt;
+登入後每切換一個頁面就會自動登出&lt;br /&gt;
+後來發現每次切換頁面 session 就會被清空一次，導致這個狀況發生&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#routes.rb&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sidekiq/web'&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;authenticate&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;can_managed?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sidekiq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Web&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/sidekiq'&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;後來的解決方法參考 &lt;a href=&quot;https://github.com/redis-store/redis-rails/issues/34&quot;&gt;Not sharing session with sidekiq web-ui&lt;/a&gt; &lt;br /&gt;
+在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require 'sidekiq/web'&lt;/code&gt; 底下加入 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Sidekiq::Web.set :sessions, false&lt;/code&gt; 就完成了！&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#routes.rb&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sidekiq/web'&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Sidekiq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Web&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:sessions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;false&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Rails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;application&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;draw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;authenticate&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Proc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;can_managed?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;mount&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sidekiq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Web&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/sidekiq'&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;....&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;略&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;</content><author><name>Amoeric</name></author><category term="sidekiq" /><summary type="html">最近用 sidekiq 後台頁面時遇到了一個問題 在 routes 中如果要使用 devise 限制 sidekiq 的使用對象的話 登入後每切換一個頁面就會自動登出 後來發現每次切換頁面 session 就會被清空一次，導致這個狀況發生 #routes.rb require 'sidekiq/web' Rails.application.routes.draw do authenticate :user, Proc.new { |u| u.can_managed? } do mount Sidekiq::Web =&amp;gt; '/sidekiq' end 後來的解決方法參考 Not sharing session with sidekiq web-ui 在 require 'sidekiq/web' 底下加入 Sidekiq::Web.set :sessions, false 就完成了！ #routes.rb require 'sidekiq/web' Sidekiq::Web.set :sessions, false Rails.application.routes.draw do authenticate :user, Proc.new { |u| u.can_managed? } do mount Sidekiq::Web =&amp;gt; '/sidekiq' end ....略</summary></entry><entry><title type="html">用 monit 監控 sidekiq 是否正常運作</title><link href="https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq/" rel="alternate" type="text/html" title="用 monit 監控 sidekiq 是否正常運作" /><published>2020-10-28T00:00:00+00:00</published><updated>2020-10-28T00:00:00+00:00</updated><id>https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq</id><content type="html" xml:base="https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq/">&lt;p&gt;由於 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq&lt;/code&gt; 不是可靠的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;process&lt;/code&gt;，有時候會自己掛掉，所以需要額外安裝監控程式去防止 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq&lt;/code&gt; 掛掉。所以決定使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;monit&lt;/code&gt; 來監控 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq&lt;/code&gt; 是否正常運行，本文紀錄 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;monit&lt;/code&gt; 安裝過程遇到的狀況與排除。&lt;/p&gt;
+
+&lt;h1 id=&quot;安裝-monit&quot;&gt;安裝 monit&lt;/h1&gt;
+
+&lt;p&gt;在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ubuntu&lt;/code&gt; 主機上執行&lt;/p&gt;
+&lt;h3 id=&quot;1-sudo-apt-get-install-monit&quot;&gt;1. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo apt-get install monit&lt;/code&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;2-建立-sidekiqconf&quot;&gt;2. 建立 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq.conf&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;安裝完成後到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/monit/conf.d&lt;/code&gt; 底下建立 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq.conf&lt;/code&gt;， 內容如下&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#把 your_project 換成專案名稱即可&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;check&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;process&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sidekiq_your_project_staging0&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pidfile&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/home/deploy/your_project/shared/tmp/pids/sidekiq.pid&quot;&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/bin/su - deploy -c 'cd /home/deploy/your_project/current &amp;amp;&amp;amp; /usr/bin/env bundle exec sidekiq   --index 0 --pidfile /home/deploy/your_project/shared/tmp/pids/sidekiq.pid --environment staging  --logfile /home/deploy/your_project/shared/log/sidekiq.log  -d'&quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt;
+
+   &lt;span class=&quot;n&quot;&gt;stop&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;program&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/bin/su - deploy -c 'cd /home/deploy/your_project/current &amp;amp;&amp;amp; /usr/bin/env bundle exec sidekiqctl stop /home/deploy/your_project/shared/tmp/pids/sidekiq.pid'&quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;seconds&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;group&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;your_project&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sidekiq&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;3-sudo-vim-etcmonitmonitrc&quot;&gt;3. sudo vim /etc/monit/monitrc&lt;/h3&gt;
+&lt;p&gt;編輯 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/monit&lt;/code&gt; 底下的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;monitrc&lt;/code&gt; 檔案，把 http 以下四行註解取消，如下圖&lt;br /&gt;
+&lt;img src=&quot;/image/monit/monit_in_monitrc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;4-sudo-service-monit-restart-重啟服務&quot;&gt;4. sudo service monit restart 重啟服務&lt;/h3&gt;
+&lt;h3 id=&quot;5-sudo-monit-status-就可以看到成功畫面&quot;&gt;5. sudo monit status 就可以看到成功畫面&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/image/monit/monit_status.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;沒有sidekiqpid&quot;&gt;沒有sidekiq.pid?&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.thinbug.com/q/12143350&quot;&gt;參考文章&lt;/a&gt;&lt;br /&gt;
+如果你跟我一樣在專案裡面 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tmp/pids&lt;/code&gt; 底下沒有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq.pid&lt;/code&gt; 的話，那就自己建一個吧！&lt;br /&gt;
+ &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pid&lt;/code&gt; 檔只有一行數字，其數字是該服務執行下的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pid&lt;/code&gt; 位置&lt;br /&gt;
+ 那如何查 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pid&lt;/code&gt; 位置呢？&lt;br /&gt;
+ 像如果要找 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq&lt;/code&gt; 的話指令可以輸入 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ps -aux | grep sidekiq&lt;/code&gt;&lt;br /&gt;
+&lt;img src=&quot;/image/sidekiq/sidekiq_pid_local.png&quot; alt=&quot;&quot; /&gt; 
+&lt;br /&gt;
+在紅線處就是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pid&lt;/code&gt; 位置了，把 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq.pid&lt;/code&gt; 檔更新後就完成了&lt;br /&gt;
+不過這方法缺點就是每次 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;deploy&lt;/code&gt; 後 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq.pid&lt;/code&gt; 就會跑掉，目前還在尋找更好的作法就是了。&lt;/p&gt;</content><author><name>Amoeric</name></author><category term="sidekiq" /><category term="monit" /><summary type="html">由於 sidekiq 不是可靠的 process，有時候會自己掛掉，所以需要額外安裝監控程式去防止 sidekiq 掛掉。所以決定使用 monit 來監控 sidekiq 是否正常運行，本文紀錄 monit 安裝過程遇到的狀況與排除。</summary></entry><entry><title type="html">用 capistrano 部署 sidekiq 6</title><link href="https://amoeric.github.io//2020/10/27/use-capistrano-deploy-sidekiq/" rel="alternate" type="text/html" title="用 capistrano 部署 sidekiq 6" /><published>2020-10-27T00:00:00+00:00</published><updated>2020-10-27T00:00:00+00:00</updated><id>https://amoeric.github.io//2020/10/27/use-capistrano-deploy-sidekiq</id><content type="html" xml:base="https://amoeric.github.io//2020/10/27/use-capistrano-deploy-sidekiq/">&lt;p&gt;如何在deploy時讓sidekiq在背景時執行呢？
+原本打算用這個 gem &lt;a href=&quot;https://github.com/seuros/capistrano-sidekiq&quot;&gt;capistrano-sidekiq&lt;/a&gt; 處理&lt;/p&gt;
+
+&lt;p&gt;但是發現 deploy 時會出現&lt;br /&gt;
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq stderr: invalid option: --index&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;爬文後發現這個 gem 已經不支援 sidekiq 6 了!&lt;/p&gt;
+
+&lt;p&gt;這樣的話解決方法有兩種&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;改回 sidekiq 6 以下版本&lt;/li&gt;
+  &lt;li&gt;自己在 ubuntu systemd 下寫個 service&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;第一種方法治標不治本，專案遲早會面臨到不得不升級的狀況&lt;/p&gt;
+
+&lt;p&gt;以下採用方法二的方式解決問題 &lt;a href=&quot;https://pastebin.com/GFnhS7YV&quot;&gt;service code 參考這裡&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;步驟一建立-sidekiqservice&quot;&gt;步驟一：建立 sidekiq.service&lt;/h1&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;在 /lib/systemd/system，底下創建 sidekiq.service&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Customize this file based on your bundler location, app directory, etc.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Put this in /usr/lib/systemd/system (CentOS) or /lib/systemd/system (Ubuntu).&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Run:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   - systemctl enable sidekiq&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#   - systemctl {start,stop,restart} sidekiq&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# This file corresponds to a single Sidekiq process.  Add multiple copies&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# to run multiple processes (sidekiq-1, sidekiq-2, etc).&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# See Inspeqtor's Systemd wiki page for more detail about Systemd:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# https://github.com/mperham/inspeqtor/wiki/Systemd&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Unit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Description&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legacy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sidekiq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;staging&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;After&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;syslog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;target&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Service&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;simple&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;WorkingDirectory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/home/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;your_project_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;current&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;ExecStart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/bin/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bash&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lc&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'bundle exec sidekiq -e staging -C config/sidekiq.yml'&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Group&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deploy&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;UMask&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mo&quot;&gt;0002&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# if we crash, restart&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;RestartSec&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#Restart=on-failure&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Restart&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;always&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# output goes to /var/log/syslog&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#StandardOutput=syslog&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#StandardError=syslog&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# This will default to &quot;bundler&quot; if we don't specify it&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;SyslogIdentifier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sidekiq&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Install&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;WantedBy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;multi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;target&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;步驟二寫-sidekiqrestart&quot;&gt;步驟二：寫 sidekiq:restart&lt;/h1&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:sidekiq&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:quiet&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;roles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;capture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;pgrep -f 'sidekiq' | xargs kill -TSTP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:restart&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;roles&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;execute&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:sudo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:systemctl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:restart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:sidekiq&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'deploy:starting'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sidekiq:quiet'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'deploy:reverted'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sidekiq:restart'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'deploy:published'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sidekiq:restart'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;在 execute :sudo, :systemctl, :restart, :sidekiq 的時候就會執行到 sidekiq.service 了！&lt;/p&gt;
+
+&lt;p&gt;接著如果你的 deploy 使用者使用 sudo 需要密碼的話應該會遇到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo: no tty present and no askpass program specified&lt;/code&gt; 的問題&lt;br /&gt;
+&lt;img src=&quot;/image/sidekiq/sidekiq_visudo.png&quot; alt=&quot;&quot; /&gt;
+&lt;a href=&quot;https://stackoverflow.com/questions/21659637/how-to-fix-sudo-no-tty-present-and-no-askpass-program-specified-error?fbclid=IwAR3Lg9VNjJBwCG0lQmY43NfFmUycADoOFJs8cUKw0dCQltk0y1F5E3Nn9eg&quot;&gt;解決方法參考文章&lt;/a&gt;&lt;br /&gt;
+解法為：&lt;br /&gt;
+先在主機上打 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo visudo&lt;/code&gt;&lt;br /&gt;
+進入後在空白處加上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%username ALL=NOPASSWD:/bin/systemctl restart sidekiq&lt;/code&gt; 儲存後離開即可&lt;/p&gt;
+
+&lt;p&gt;接著在主機上確認看看  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo service sidekiq status&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/image/sidekiq/sidekiq_status.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;成功！&lt;/p&gt;
+
+&lt;h1 id=&quot;總結&quot;&gt;總結&lt;/h1&gt;
+&lt;p&gt;爬了很久才找到解法，絕大多數的做法都在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sidekiq:restart&lt;/code&gt; 的時候使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle exec sidekiq -e staging -C config/sidekiq.yml -d&lt;/code&gt;&lt;br /&gt;
+但是這方法會讓我在 deploy 時卡在 sidekiq 畫面，無法成功部署….不知道是不是版本問題？&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://ilab.me/howto/run-sidekiq-6-using-systemd/&quot;&gt;本篇文章參考&amp;lt;-&lt;/a&gt;&lt;/p&gt;</content><author><name>Amoeric</name></author><category term="capistrano" /><category term="sidekiq" /><summary type="html">如何在deploy時讓sidekiq在背景時執行呢？ 原本打算用這個 gem capistrano-sidekiq 處理 但是發現 deploy 時會出現 sidekiq stderr: invalid option: --index 爬文後發現這個 gem 已經不支援 sidekiq 6 了! 這樣的話解決方法有兩種 改回 sidekiq 6 以下版本 自己在 ubuntu systemd 下寫個 service 第一種方法治標不治本，專案遲早會面臨到不得不升級的狀況 以下採用方法二的方式解決問題 service code 參考這裡</summary></entry><entry><title type="html">在 Ubuntu 上安裝 Elasticsearch</title><link href="https://amoeric.github.io//2020/10/13/elasticsearch-install/" rel="alternate" type="text/html" title="在 Ubuntu 上安裝 Elasticsearch" /><published>2020-10-13T11:23:00+00:00</published><updated>2020-10-13T11:23:00+00:00</updated><id>https://amoeric.github.io//2020/10/13/elasticsearch-install</id><content type="html" xml:base="https://amoeric.github.io//2020/10/13/elasticsearch-install/">&lt;p&gt;最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 ， 發文前版本已經更新到 7.9.2 了！&lt;br /&gt;
+至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。&lt;/p&gt;
+
+&lt;h1 id=&quot;安裝-java&quot;&gt;安裝 java&lt;/h1&gt;
+&lt;p&gt;由於在安裝 elasticsearch 前需要先安裝 java，而不同版本所需要的 java 有所不同，6.8 版本只需要安裝 Java8 就可以了。&lt;/p&gt;
+
+&lt;p&gt;有需求的可以點這裡查看&lt;a href=&quot;https://www.elastic.co/support/matrix#matrix_jvm&quot;&gt;官網支援版本&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;這裡選擇安裝 OpenJDK 8&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openjdk&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jdk&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;安裝後打下面指令確認 java 版本&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;java&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;看到這訊息就表示安裝成功了
+&lt;img src=&quot;/image/elasticsearch-install/java-version.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;安裝好 java 後，下一步就是安裝 elasticsearch&lt;/p&gt;
+
+&lt;h1 id=&quot;安裝-elasticsearch&quot;&gt;安裝 elasticsearch&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;步驟一：下載和安裝公鑰&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;wget&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;qO&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:/&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;artifacts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;elastic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;co&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;GPG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;KEY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;沒意外的話視窗會顯示 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OK&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;步驟二：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;更新 apt 、 安裝 apt-transport-https&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;transport&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;步驟三：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;將儲存庫定義保存到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/apt/sources.list.d/elastic-6.x.list&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deb https://artifacts.elastic.co/packages/6.x/apt stable main&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tee&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/etc/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sources&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;d&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elastic&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;list&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;這裡的6.x是版本號的意思，如果要安裝特定版本可以修改，例如要安裝7的版本可以改成 7.x&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;步驟四：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;更新 apt 並安裝 elasticsearch&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;跑完後就安裝成功了！不過安裝完成後並不會自動執行，還需要&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;systemctl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;enable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;service&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;systemctl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;start&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;service&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h1 id=&quot;確認是否執行&quot;&gt;確認是否執行&lt;/h1&gt;
+
+&lt;p&gt;可以透過以下方式確認 elasticsearch 有沒有在執行&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GET&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;localhost:9200/&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;應該會看到下面畫面&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/image/elasticsearch-install/elastic-version2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;又或者&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/image/elasticsearch-install/elastic-status.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如果出錯的話也可以透過這指令查詢&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;分享一下安裝錯 java 後產生的錯誤視窗
+￼&lt;img src=&quot;/image/elasticsearch-install/elastic-error.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;查看版本&quot;&gt;查看版本&lt;/h1&gt;
+
+&lt;p&gt;那安裝成功後怎麼看 elasticsearch 版本呢？在這邊提供兩個方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;方法一&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;X&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;GET&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;localhost:9200/&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/image/elasticsearch-install/elastic-version2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;這裡的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;version number&lt;/code&gt; 就是版本號了&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;方法二&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由於方法一僅限於在安裝成功後才能確認，方法二安裝失敗也可以用哦！&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;n&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/usr/s&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hare&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;elasticsearch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;version&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/image/elasticsearch-install/elastic-version1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;結論&quot;&gt;結論&lt;/h1&gt;
+
+&lt;p&gt;爬了很多文章後整理在這裡，希望有相關需求的人能夠少繞點路。如果不幸出錯的話建議砍掉重裝(目前遇過兩次都是 java 問題)，下面有連結可以移除相關程式，如果想要看 log 排除狀況的話可以到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/log/elasticsearch/elasticsearch.log&lt;/code&gt; 查看哦！&lt;/p&gt;
+
+&lt;h2 id=&quot;參考文章&quot;&gt;參考文章&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/6.8/deb.html&quot;&gt;官網教學&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.myfreax.com/how-to-install-elasticsearch-on-ubuntu-18-04/&quot;&gt;如何在Ubuntu 18.04上安装Elasticsearch&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;刪除相關程式&quot;&gt;刪除相關程式&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://askubuntu.com/questions/84483/how-to-completely-uninstall-java&quot;&gt;刪除 java&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://howtoinstall.co/en/ubuntu/xenial/elasticsearch?action=remove&quot;&gt;刪除 elasticsearch&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://unix.stackexchange.com/questions/217369/clear-apt-get-list&quot;&gt;刪除 apt-get update clear update&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Amoeric</name></author><category term="elasticsearch" /><summary type="html">最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 ， 發文前版本已經更新到 7.9.2 了！ 至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。</summary></entry></feed>

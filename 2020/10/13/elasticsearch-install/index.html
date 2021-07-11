@@ -1,0 +1,225 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link type="application/atom+xml" rel="alternate" href="https://amoeric.github.io//feed.xml" title="Amoeric" />
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>在 Ubuntu 上安裝 Elasticsearch | Amoeric</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="在 Ubuntu 上安裝 Elasticsearch" />
+<meta name="author" content="Amoeric" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 ， 發文前版本已經更新到 7.9.2 了！ 至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。" />
+<meta property="og:description" content="最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 ， 發文前版本已經更新到 7.9.2 了！ 至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。" />
+<link rel="canonical" href="https://amoeric.github.io//2020/10/13/elasticsearch-install/" />
+<meta property="og:url" content="https://amoeric.github.io//2020/10/13/elasticsearch-install/" />
+<meta property="og:site_name" content="Amoeric" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-10-13T11:23:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="在 Ubuntu 上安裝 Elasticsearch" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Amoeric" />
+<script type="application/ld+json">
+{"description":"最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 \b\b\b， 發文前版本已經更新到 7.9.2 了！ 至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。","url":"https://amoeric.github.io//2020/10/13/elasticsearch-install/","@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://amoeric.github.io//path/to/image"},"name":"Amoeric"},"headline":"在 Ubuntu 上安裝 Elasticsearch","dateModified":"2020-10-13T11:23:00+00:00","datePublished":"2020-10-13T11:23:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://amoeric.github.io//2020/10/13/elasticsearch-install/"},"author":{"@type":"Person","name":"Amoeric"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="icon" href="/assets/images/favicon.png" type="image/ico" />
+    <link rel="stylesheet" href="/css/site.css">
+  </head>
+  <body>
+    <nav class="flex items-center justify-between flex-wrap bg-black p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+    <a href="/"><span class="font-semibold text-xl tracking-tight">Amoeric</span></a>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded border-white text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="/about" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        About
+      </a>
+      <a href="/tags" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        Tags
+      </a>
+    </div>
+
+  </div>
+</nav>
+    <section class="">
+      
+<div class="container flex flex-wrap justify-center mx-auto">
+  <div class="w-11/12 lg:w-6/12 mb-4">
+    <h2 class="text-2xl lg:text-4xl">在 Ubuntu 上安裝 Elasticsearch</h2>
+    <p class="my-2">
+      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+      
+    </p>
+    
+      
+      <a href="https://amoeric.github.io//tag/elasticsearch"> <span class="tag-mark inline-block my-2"> elasticsearch </span></a>
+      
+    
+  </div>
+
+  <div class="lg:w-12/12 p-1"></div>
+  <div class="prose w-10/12 lg:w-6/12 mb-4"><p>最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 ， 發文前版本已經更新到 7.9.2 了！<br />
+至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。</p>
+
+<h1 id="安裝-java">安裝 java</h1>
+<p>由於在安裝 elasticsearch 前需要先安裝 java，而不同版本所需要的 java 有所不同，6.8 版本只需要安裝 Java8 就可以了。</p>
+
+<p>有需求的可以點這裡查看<a href="https://www.elastic.co/support/matrix#matrix_jvm">官網支援版本</a></p>
+
+<p>這裡選擇安裝 OpenJDK 8</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">openjdk</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">jdk</span></code></pre></figure>
+
+<p>安裝後打下面指令確認 java 版本</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">java</span> <span class="o">-</span><span class="n">version</span></code></pre></figure>
+
+<p>看到這訊息就表示安裝成功了
+<img src="/image/elasticsearch-install/java-version.png" alt="" /></p>
+
+<p>安裝好 java 後，下一步就是安裝 elasticsearch</p>
+
+<h1 id="安裝-elasticsearch">安裝 elasticsearch</h1>
+
+<ul>
+  <li>步驟一：下載和安裝公鑰</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">wget</span> <span class="o">-</span><span class="n">qO</span> <span class="o">-</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">artifacts</span><span class="p">.</span><span class="nf">elastic</span><span class="p">.</span><span class="nf">co</span><span class="o">/</span><span class="no">GPG</span><span class="o">-</span><span class="no">KEY</span><span class="o">-</span><span class="n">elasticsearch</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">key</span> <span class="n">add</span> <span class="o">-</span></code></pre></figure>
+
+<p>沒意外的話視窗會顯示 <code class="language-plaintext highlighter-rouge">OK</code></p>
+
+<ul>
+  <li>步驟二：</li>
+</ul>
+
+<p>更新 apt 、 安裝 apt-transport-https</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">apt</span><span class="o">-</span><span class="n">transport</span><span class="o">-</span><span class="n">https</span></code></pre></figure>
+
+<ul>
+  <li>步驟三：</li>
+</ul>
+
+<p>將儲存庫定義保存到 <code class="language-plaintext highlighter-rouge">/etc/apt/sources.list.d/elastic-6.x.list</code></p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">echo</span> <span class="s2">"deb https://artifacts.elastic.co/packages/6.x/apt stable main"</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">tee</span> <span class="o">-</span><span class="n">a</span> <span class="sr">/etc/</span><span class="n">apt</span><span class="o">/</span><span class="n">sources</span><span class="p">.</span><span class="nf">list</span><span class="p">.</span><span class="nf">d</span><span class="o">/</span><span class="n">elastic</span><span class="o">-</span><span class="mi">6</span><span class="p">.</span><span class="nf">x</span><span class="p">.</span><span class="nf">list</span></code></pre></figure>
+
+<p><strong>這裡的6.x是版本號的意思，如果要安裝特定版本可以修改，例如要安裝7的版本可以改成 7.x</strong></p>
+
+<ul>
+  <li>步驟四：</li>
+</ul>
+
+<p>更新 apt 並安裝 elasticsearch</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">apt</span> <span class="n">update</span>
+<span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">elasticsearch</span></code></pre></figure>
+
+<p>跑完後就安裝成功了！不過安裝完成後並不會自動執行，還需要</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">elasticsearch</span><span class="p">.</span><span class="nf">service</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">elasticsearch</span><span class="p">.</span><span class="nf">service</span></code></pre></figure>
+
+<h1 id="確認是否執行">確認是否執行</h1>
+
+<p>可以透過以下方式確認 elasticsearch 有沒有在執行</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">GET</span> <span class="s2">"localhost:9200/"</span></code></pre></figure>
+
+<p>應該會看到下面畫面</p>
+
+<p><img src="/image/elasticsearch-install/elastic-version2.png" alt="" /></p>
+
+<p>又或者</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">sudo</span> <span class="n">service</span> <span class="n">elasticsearch</span> <span class="n">status</span></code></pre></figure>
+
+<p><img src="/image/elasticsearch-install/elastic-status.png" alt="" /></p>
+
+<p><strong>如果出錯的話也可以透過這指令查詢</strong></p>
+
+<p>分享一下安裝錯 java 後產生的錯誤視窗
+￼<img src="/image/elasticsearch-install/elastic-error.png" alt="" /></p>
+
+<h1 id="查看版本">查看版本</h1>
+
+<p>那安裝成功後怎麼看 elasticsearch 版本呢？在這邊提供兩個方法</p>
+
+<ul>
+  <li>方法一</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">curl</span> <span class="o">-</span><span class="no">X</span> <span class="no">GET</span> <span class="s2">"localhost:9200/"</span></code></pre></figure>
+
+<p><img src="/image/elasticsearch-install/elastic-version2.png" alt="" /></p>
+
+<p>這裡的 <code class="language-plaintext highlighter-rouge">version number</code> 就是版本號了</p>
+
+<ul>
+  <li>方法二</li>
+</ul>
+
+<p>由於方法一僅限於在安裝成功後才能確認，方法二安裝失敗也可以用哦！</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">cd</span> <span class="sr">/usr/s</span><span class="n">hare</span><span class="o">/</span><span class="n">elasticsearch</span>
+<span class="n">sudo</span> <span class="p">.</span><span class="nf">/</span><span class="n">bin</span><span class="o">/</span><span class="n">elasticsearch</span> <span class="o">--</span><span class="n">version</span></code></pre></figure>
+
+<p><img src="/image/elasticsearch-install/elastic-version1.png" alt="" /></p>
+
+<h1 id="結論">結論</h1>
+
+<p>爬了很多文章後整理在這裡，希望有相關需求的人能夠少繞點路。如果不幸出錯的話建議砍掉重裝(目前遇過兩次都是 java 問題)，下面有連結可以移除相關程式，如果想要看 log 排除狀況的話可以到 <code class="language-plaintext highlighter-rouge">/var/log/elasticsearch/elasticsearch.log</code> 查看哦！</p>
+
+<h2 id="參考文章">參考文章</h2>
+<ul>
+  <li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.8/deb.html">官網教學</a></li>
+  <li><a href="https://www.myfreax.com/how-to-install-elasticsearch-on-ubuntu-18-04/">如何在Ubuntu 18.04上安装Elasticsearch</a></li>
+</ul>
+
+<h2 id="刪除相關程式">刪除相關程式</h2>
+<ul>
+  <li><a href="https://askubuntu.com/questions/84483/how-to-completely-uninstall-java">刪除 java</a></li>
+  <li><a href="https://howtoinstall.co/en/ubuntu/xenial/elasticsearch?action=remove">刪除 elasticsearch</a></li>
+  <li><a href="https://unix.stackexchange.com/questions/217369/clear-apt-get-list">刪除 apt-get update clear update</a></li>
+</ul>
+
+</div>
+</div>
+    </section>
+
+    
+      <script>
+  // Copy your tracking snippet into this block!
+</script>
+
+
+    
+    <footer class="w-max bg-gray-200 bg-opacity-50 py-2">
+  <div class="w-8/12 mx-auto flex flex-wrap">
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <ul class="contact-list">
+        <li class="p-name">AmoEric</li>
+        <li><a class="u-email" href="mailto:xeriok02390@gmail.com">xeriok02390@gmail.com</a></li>
+	      <li><a href="https://github.com/amoeric">github <span class="username">amoeric</span></a></li>
+      </ul>
+    </div>
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <p>嗨！目前寫 Ruby On Rails，會在這邊紀錄開發時遇到的問題</p>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
+

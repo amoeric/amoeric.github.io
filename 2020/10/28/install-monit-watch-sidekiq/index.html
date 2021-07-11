@@ -1,0 +1,136 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link type="application/atom+xml" rel="alternate" href="https://amoeric.github.io//feed.xml" title="Amoeric" />
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>用 monit 監控 sidekiq 是否正常運作 | Amoeric</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="用 monit 監控 sidekiq 是否正常運作" />
+<meta name="author" content="Amoeric" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="由於 sidekiq 不是可靠的 process，有時候會自己掛掉，所以需要額外安裝監控程式去防止 sidekiq 掛掉。所以決定使用 monit 來監控 sidekiq 是否正常運行，本文紀錄 monit 安裝過程遇到的狀況與排除。" />
+<meta property="og:description" content="由於 sidekiq 不是可靠的 process，有時候會自己掛掉，所以需要額外安裝監控程式去防止 sidekiq 掛掉。所以決定使用 monit 來監控 sidekiq 是否正常運行，本文紀錄 monit 安裝過程遇到的狀況與排除。" />
+<link rel="canonical" href="https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq/" />
+<meta property="og:url" content="https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq/" />
+<meta property="og:site_name" content="Amoeric" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-10-28T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="用 monit 監控 sidekiq 是否正常運作" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Amoeric" />
+<script type="application/ld+json">
+{"description":"由於 sidekiq 不是可靠的 process，有時候會自己掛掉，所以需要額外安裝監控程式去防止 sidekiq 掛掉。所以決定使用 monit 來監控 sidekiq 是否正常運行，本文紀錄 monit 安裝過程遇到的狀況與排除。","url":"https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq/","@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://amoeric.github.io//path/to/image"},"name":"Amoeric"},"headline":"用 monit 監控 sidekiq 是否正常運作","dateModified":"2020-10-28T00:00:00+00:00","datePublished":"2020-10-28T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://amoeric.github.io//2020/10/28/install-monit-watch-sidekiq/"},"author":{"@type":"Person","name":"Amoeric"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="icon" href="/assets/images/favicon.png" type="image/ico" />
+    <link rel="stylesheet" href="/css/site.css">
+  </head>
+  <body>
+    <nav class="flex items-center justify-between flex-wrap bg-black p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+    <a href="/"><span class="font-semibold text-xl tracking-tight">Amoeric</span></a>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded border-white text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="/about" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        About
+      </a>
+      <a href="/tags" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        Tags
+      </a>
+    </div>
+
+  </div>
+</nav>
+    <section class="">
+      
+<div class="container flex flex-wrap justify-center mx-auto">
+  <div class="w-11/12 lg:w-6/12 mb-4">
+    <h2 class="text-2xl lg:text-4xl">用 monit 監控 sidekiq 是否正常運作</h2>
+    <p class="my-2">
+      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+      
+    </p>
+    
+      
+      <a href="https://amoeric.github.io//tag/sidekiq"> <span class="tag-mark inline-block my-2"> sidekiq </span></a>
+      
+      <a href="https://amoeric.github.io//tag/monit"> <span class="tag-mark inline-block my-2"> monit </span></a>
+      
+    
+  </div>
+
+  <div class="lg:w-12/12 p-1"></div>
+  <div class="prose w-10/12 lg:w-6/12 mb-4"><p>由於 <code class="language-plaintext highlighter-rouge">sidekiq</code> 不是可靠的 <code class="language-plaintext highlighter-rouge">process</code>，有時候會自己掛掉，所以需要額外安裝監控程式去防止 <code class="language-plaintext highlighter-rouge">sidekiq</code> 掛掉。所以決定使用 <code class="language-plaintext highlighter-rouge">monit</code> 來監控 <code class="language-plaintext highlighter-rouge">sidekiq</code> 是否正常運行，本文紀錄 <code class="language-plaintext highlighter-rouge">monit</code> 安裝過程遇到的狀況與排除。</p>
+
+<h1 id="安裝-monit">安裝 monit</h1>
+
+<p>在 <code class="language-plaintext highlighter-rouge">ubuntu</code> 主機上執行</p>
+<h3 id="1-sudo-apt-get-install-monit">1. <code class="language-plaintext highlighter-rouge">sudo apt-get install monit</code></h3>
+<h3 id="2-建立-sidekiqconf">2. 建立 <code class="language-plaintext highlighter-rouge">sidekiq.conf</code></h3>
+<p>安裝完成後到 <code class="language-plaintext highlighter-rouge">/etc/monit/conf.d</code> 底下建立 <code class="language-plaintext highlighter-rouge">sidekiq.conf</code>， 內容如下</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="c1">#把 your_project 換成專案名稱即可</span>
+ <span class="n">check</span> <span class="n">process</span> <span class="n">sidekiq_your_project_staging0</span>
+   <span class="n">with</span> <span class="n">pidfile</span> <span class="s2">"/home/deploy/your_project/shared/tmp/pids/sidekiq.pid"</span>
+   <span class="n">start</span> <span class="n">program</span> <span class="o">=</span> <span class="s2">"/bin/su - deploy -c 'cd /home/deploy/your_project/current &amp;&amp; /usr/bin/env bundle exec sidekiq   --index 0 --pidfile /home/deploy/your_project/shared/tmp/pids/sidekiq.pid --environment staging  --logfile /home/deploy/your_project/shared/log/sidekiq.log  -d'"</span> <span class="n">with</span> <span class="n">timeout</span> <span class="mi">30</span> <span class="n">seconds</span>
+
+   <span class="n">stop</span> <span class="n">program</span> <span class="o">=</span> <span class="s2">"/bin/su - deploy -c 'cd /home/deploy/your_project/current &amp;&amp; /usr/bin/env bundle exec sidekiqctl stop /home/deploy/your_project/shared/tmp/pids/sidekiq.pid'"</span> <span class="n">with</span> <span class="n">timeout</span> <span class="mi">20</span> <span class="n">seconds</span>
+   <span class="n">group</span> <span class="n">your_project</span><span class="o">-</span><span class="n">sidekiq</span></code></pre></figure>
+
+<h3 id="3-sudo-vim-etcmonitmonitrc">3. sudo vim /etc/monit/monitrc</h3>
+<p>編輯 <code class="language-plaintext highlighter-rouge">/etc/monit</code> 底下的 <code class="language-plaintext highlighter-rouge">monitrc</code> 檔案，把 http 以下四行註解取消，如下圖<br />
+<img src="/image/monit/monit_in_monitrc.png" alt="" /></p>
+
+<h3 id="4-sudo-service-monit-restart-重啟服務">4. sudo service monit restart 重啟服務</h3>
+<h3 id="5-sudo-monit-status-就可以看到成功畫面">5. sudo monit status 就可以看到成功畫面</h3>
+<p><img src="/image/monit/monit_status.png" alt="" /></p>
+
+<h1 id="沒有sidekiqpid">沒有sidekiq.pid?</h1>
+<p><a href="https://www.thinbug.com/q/12143350">參考文章</a><br />
+如果你跟我一樣在專案裡面 <code class="language-plaintext highlighter-rouge">tmp/pids</code> 底下沒有 <code class="language-plaintext highlighter-rouge">sidekiq.pid</code> 的話，那就自己建一個吧！<br />
+ <code class="language-plaintext highlighter-rouge">pid</code> 檔只有一行數字，其數字是該服務執行下的 <code class="language-plaintext highlighter-rouge">pid</code> 位置<br />
+ 那如何查 <code class="language-plaintext highlighter-rouge">pid</code> 位置呢？<br />
+ 像如果要找 <code class="language-plaintext highlighter-rouge">sidekiq</code> 的話指令可以輸入 <code class="language-plaintext highlighter-rouge">ps -aux | grep sidekiq</code><br />
+<img src="/image/sidekiq/sidekiq_pid_local.png" alt="" /> 
+<br />
+在紅線處就是 <code class="language-plaintext highlighter-rouge">pid</code> 位置了，把 <code class="language-plaintext highlighter-rouge">sidekiq.pid</code> 檔更新後就完成了<br />
+不過這方法缺點就是每次 <code class="language-plaintext highlighter-rouge">deploy</code> 後 <code class="language-plaintext highlighter-rouge">sidekiq.pid</code> 就會跑掉，目前還在尋找更好的作法就是了。</p>
+
+</div>
+</div>
+    </section>
+
+    
+      <script>
+  // Copy your tracking snippet into this block!
+</script>
+
+
+    
+    <footer class="w-max bg-gray-200 bg-opacity-50 py-2">
+  <div class="w-8/12 mx-auto flex flex-wrap">
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <ul class="contact-list">
+        <li class="p-name">AmoEric</li>
+        <li><a class="u-email" href="mailto:xeriok02390@gmail.com">xeriok02390@gmail.com</a></li>
+	      <li><a href="https://github.com/amoeric">github <span class="username">amoeric</span></a></li>
+      </ul>
+    </div>
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <p>嗨！目前寫 Ruby On Rails，會在這邊紀錄開發時遇到的問題</p>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
+

@@ -1,0 +1,196 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link type="application/atom+xml" rel="alternate" href="https://amoeric.github.io//feed.xml" title="Amoeric" />
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>use nesteds_form in rails | Amoeric</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="use nesteds_form in rails" />
+<meta name="author" content="Amoeric" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。" />
+<meta property="og:description" content="在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。" />
+<link rel="canonical" href="https://amoeric.github.io//2021/06/03/rails-nested_form/" />
+<meta property="og:url" content="https://amoeric.github.io//2021/06/03/rails-nested_form/" />
+<meta property="og:site_name" content="Amoeric" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-06-03T08:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="use nesteds_form in rails" />
+<meta name="twitter:site" content="@" />
+<meta name="twitter:creator" content="@Amoeric" />
+<script type="application/ld+json">
+{"description":"在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。","url":"https://amoeric.github.io//2021/06/03/rails-nested_form/","@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://amoeric.github.io//path/to/image"},"name":"Amoeric"},"headline":"use nesteds_form in rails","dateModified":"2021-06-03T08:00:00+00:00","datePublished":"2021-06-03T08:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://amoeric.github.io//2021/06/03/rails-nested_form/"},"author":{"@type":"Person","name":"Amoeric"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="icon" href="/assets/images/favicon.png" type="image/ico" />
+    <link rel="stylesheet" href="/css/site.css">
+  </head>
+  <body>
+    <nav class="flex items-center justify-between flex-wrap bg-black p-6">
+  <div class="flex items-center flex-shrink-0 text-white mr-6">
+    <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+    <a href="/"><span class="font-semibold text-xl tracking-tight">Amoeric</span></a>
+  </div>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded border-white text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="/about" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        About
+      </a>
+      <a href="/tags" class="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+        Tags
+      </a>
+    </div>
+
+  </div>
+</nav>
+    <section class="">
+      
+  <figure class="post-full-image" style="margin-bottom: 1vw; height: 350px; background-image: url(/assets/images/sky.jpg)">
+  </figure>
+
+<div class="container flex flex-wrap justify-center mx-auto">
+  <div class="w-11/12 lg:w-6/12 mb-4">
+    <h2 class="text-2xl lg:text-4xl">use nesteds_form in rails</h2>
+    <p class="my-2">
+      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+      
+    </p>
+    
+      
+      <a href="https://amoeric.github.io//tag/rails"> <span class="tag-mark inline-block my-2"> rails </span></a>
+      
+      <a href="https://amoeric.github.io//tag/nesteds_form"> <span class="tag-mark inline-block my-2"> nesteds_form </span></a>
+      
+    
+  </div>
+
+  <div class="lg:w-12/12 p-1"></div>
+  <div class="prose w-10/12 lg:w-6/12 mb-4"><p>在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。</p>
+
+<h4 id="model">Model</h4>
+
+<ul>
+  <li>把需要一併新增的關聯物件設定 <code class="language-plaintext highlighter-rouge">accepts_nested_attributes_for</code> ， controller 就可以使用 <code class="language-plaintext highlighter-rouge">addresses_attributes</code> params ，一併將address新增。</li>
+</ul>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Person</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">has_many</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">inverse_of: :person</span>
+
+  <span class="n">accepts_nested_attributes_for</span> <span class="ss">:addresses</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">Address</span> <span class="o">&lt;</span> <span class="no">ApplicationRecord</span>
+  <span class="n">belongs_to</span> <span class="ss">:person</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<h3 id="form">Form</h3>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="sx">%= form_with model: @person do |form| %&gt;
+  Addresses:
+  &lt;ul&gt;
+    &lt;%=</span> <span class="n">form</span><span class="p">.</span><span class="nf">fields_for</span> <span class="ss">:addresses</span> <span class="k">do</span> <span class="o">|</span><span class="n">addresses_form</span><span class="o">|</span> <span class="sx">%&gt;
+      &lt;li&gt;</span>
+        <span class="o">&lt;</span><span class="sx">%= addresses_form.label :kind %&gt;
+        &lt;%=</span> <span class="n">addresses_form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:kind</span> <span class="o">%&gt;</span>
+
+        <span class="o">&lt;</span><span class="sx">%= addresses_form.label :street %&gt;
+        &lt;%=</span> <span class="n">addresses_form</span><span class="p">.</span><span class="nf">text_field</span> <span class="ss">:street</span> <span class="o">%&gt;</span>
+        <span class="o">...</span>
+      <span class="o">&lt;</span><span class="sr">/li&gt;
+    &lt;% end %&gt;
+  &lt;/u</span><span class="n">l</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</code></pre></div></div>
+
+<h4 id="params">Params</h4>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="s1">'person'</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="s1">'name'</span> <span class="o">=&gt;</span> <span class="s1">'John Doe'</span><span class="p">,</span>
+    <span class="s1">'addresses_attributes'</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="s1">'0'</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="s1">'kind'</span> <span class="o">=&gt;</span> <span class="s1">'Home'</span><span class="p">,</span>
+        <span class="s1">'street'</span> <span class="o">=&gt;</span> <span class="s1">'221b Baker Street'</span>
+      <span class="p">},</span>
+      <span class="s1">'1'</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="s1">'kind'</span> <span class="o">=&gt;</span> <span class="s1">'Office'</span><span class="p">,</span>
+        <span class="s1">'street'</span> <span class="o">=&gt;</span> <span class="s1">'31 Spooner Street'</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="controller">controller</h4>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:person</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">address_attributes: </span><span class="p">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:kind</span><span class="p">,</span> <span class="ss">:street</span><span class="p">])</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>這樣就可以在新增 person 時一併新增 address 了！可以多多使用這種方式省下不必要的 model 。</p>
+
+<p>另外， <code class="language-plaintext highlighter-rouge">accepts_nested_attributes_for</code>  還提供了 <code class="language-plaintext highlighter-rouge">allow_destroy: true</code> 方式能夠刪除 address。</p>
+
+<hr />
+
+<h4 id="model-1">model</h4>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">--</span><span class="err">略</span><span class="o">--</span>
+ <span class="n">accepts_nested_attributes_for</span> <span class="ss">:addresses</span><span class="p">,</span> <span class="ss">allow_destroy: </span><span class="kp">true</span>
+<span class="o">--</span><span class="err">略</span><span class="o">--</span>
+</code></pre></div></div>
+
+<h4 id="form-1">form</h4>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="o">&lt;</span><span class="sx">%= form.fields_for :addresses do |addresses_form| %&gt;
+      &lt;li&gt;
+        &lt;%=</span> <span class="n">addresses_form</span><span class="p">.</span><span class="nf">check_box</span> <span class="ss">:_destroy</span> <span class="o">%&gt;</span>
+      <span class="o">&lt;</span><span class="sr">/li&gt;
+    &lt;% end %&gt;
+</span></code></pre></div></div>
+
+<p>此時觀察 params 就會發現多了一個 _destroy 的 params，因此加入 controller 的 permit 即可。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">params</span><span class="p">.</span><span class="nf">require</span><span class="p">(</span><span class="ss">:person</span><span class="p">).</span><span class="nf">permit</span><span class="p">(</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">address_attributes: </span><span class="p">[</span><span class="ss">:id</span><span class="p">,</span> <span class="ss">:kind</span><span class="p">,</span> <span class="ss">:street</span><span class="p">,</span> <span class="ss">:_destroy</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h2 id="參考來源">參考來源</h2>
+<p><a href="https://guides.rubyonrails.org/form_helpers.html#nested-forms">https://guides.rubyonrails.org/form_helpers.html#nested-forms</a></p>
+</div>
+</div>
+    </section>
+
+    
+      <script>
+  // Copy your tracking snippet into this block!
+</script>
+
+
+    
+    <footer class="w-max bg-gray-200 bg-opacity-50 py-2">
+  <div class="w-8/12 mx-auto flex flex-wrap">
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <ul class="contact-list">
+        <li class="p-name">AmoEric</li>
+        <li><a class="u-email" href="mailto:xeriok02390@gmail.com">xeriok02390@gmail.com</a></li>
+	      <li><a href="https://github.com/amoeric">github <span class="username">amoeric</span></a></li>
+      </ul>
+    </div>
+    <div class="w-12/12 lg:w-6/12 mb-4">
+      <p>嗨！目前寫 Ruby On Rails，會在這邊紀錄開發時遇到的問題</p>
+    </div>
+  </div>
+</footer>
+
+  </body>
+</html>
+
