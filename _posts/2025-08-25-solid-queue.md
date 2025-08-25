@@ -171,6 +171,8 @@ job: bin/jobs
 
 一樣需要在 development 加上 queue connection
 
+設定完後記得跑 `rails db:migrate`，讓 rails 建立對應 table。 (migrate 跑完沒有出現任何訊息是正常的)
+
 ```yml
 # database.yml
 
