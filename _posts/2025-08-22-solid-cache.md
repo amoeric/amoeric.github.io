@@ -24,7 +24,7 @@ gem "solid_cache"
   - 建立 db/cache_schema.rb
   - 修改 config/environments/production.rb
 
-![截圖 2025-08-22 上午8.42.58](https://hackmd.io/_uploads/HkO7a4BFxx.png)
+<img src="/assets/images/solid_cache/1.png" alt="solid_cache_install">
 
 以下是實際產生出來的檔案
 
@@ -178,8 +178,7 @@ config.cache_store = :solid_cache_store
 
 可以翻 log 看看，你會發現在用到 cache 的地方會有 SolidCache 相關的 log。
 
-![截圖 2025-08-22 上午9.18.42](https://hackmd.io/_uploads/SyNIdrStxl.png)
-
+<img src="/assets/images/solid_cache/2.png" alt="solid_cache_log">
 
 ## 參考文件
 
