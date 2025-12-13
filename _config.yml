@@ -17,11 +17,11 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 # Site Settings
 locale                   : "en-US"
 rtl                      : # true, false (default) # turns direction of the page into right to left for RTL languages
-title                    : "Site Title"
+title                    : "amoeric Blogs"
 title_separator          : "-"
-subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Your Name"
-description              : "An amazing website."
+subtitle                 : "Ruby on Rails 工程師的技術部落格"
+name                     : "amoeric"
+description              : "一個在高雄的 Ruby On Rails 工程師，從 2019 年三月報名五倍紅寶石第一屆 Astrocamp 至今都在寫 Ruby On Rails。"
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -113,10 +113,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
+  name             : "amoeric"
+  avatar           : "/assets/images/amoeric.jpg"
+  bio              : "一個在高雄的 Ruby On Rails 工程師，從 2019 年三月報名五倍紅寶石第一屆 Astrocamp 至今都在寫 Ruby On Rails。"
+  location         : "高雄, 台灣"
   email            :
   links:
     - label: "Email"
