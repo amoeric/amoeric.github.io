@@ -78,8 +78,8 @@ tags:
 
 存放可重用的 HTML 片段，例如 header、footer、sidebar 等。在其他檔案中可以這樣引用：
 
-```liquid
-{% include header.html %}
+```
+{% raw %}{% include header.html %}{% endraw %}
 ```
 
 ### _sass/
