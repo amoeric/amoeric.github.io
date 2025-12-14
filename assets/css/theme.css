@@ -860,3 +860,25 @@ img.rounded-circle {
     aspect-ratio: 1 / 1;
     object-fit: cover;
 }
+
+/* Search box styling */
+.bd-search .input-group {
+    border: 2px solid #333;
+    border-radius: 25px;
+    overflow: hidden;
+    min-width: 200px;
+}
+.bd-search .input-group-text {
+    border: none;
+    padding-left: 15px;
+}
+.bd-search .form-control {
+    border: none;
+    padding-right: 15px;
+}
+.bd-search .form-control:focus {
+    box-shadow: none;
+}
+.bd-search .input-group:focus-within {
+    border-color: #03a87c;
+}
