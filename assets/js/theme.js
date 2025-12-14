@@ -134,3 +134,23 @@ $(function() {
     }
   }
 });
+
+// Back to Top Button
+$(function() {
+    var backToTop = $('#back-to-top');
+
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 300) {
+            backToTop.addClass('show');
+        } else {
+            backToTop.removeClass('show');
+        }
+    });
+
+    backToTop.on('click', function(e) {
+        e.preventDefault();
+        $('html, body').animate({
+            scrollTop: 0
+        }, 500);
+    });
+});
