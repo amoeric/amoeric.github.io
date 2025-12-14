@@ -11,14 +11,20 @@
 
 本文章是在已經完成用 jekyll 推上 github.io 的基礎上進行的設置，如果還沒有設定的話請參考 [建立你自己的 github.io](https://amoeric.github.io/create_your_github_io/)、[jekyll 架構介紹](https://amoeric.github.io/jekyll-architecture/)，也歡迎點擊 jekyll 標籤看更多相關文章。
 
-以下紀錄如何用 macos & ios obsidian 的方便性去完成跨裝置、並且隨時隨地的編輯自己的 github.io 。
+整體流程會是：
+- 編輯文章 > 自動 commit & push > github action build jekyll > 更新 github.io
+
+
+以下紀錄如何用 macos & ios obsidian 的第三方插件去完成跨裝置、並且隨時隨地的編輯自己的 github.io 。
 
 ## Git
 在 obsidian 如果要完成跨裝置同步的功能，本文章的做法是統一上傳到 github ，並且透過插件去自動 commit、push、pull，以下紀錄安裝步驟。
 
+### 安裝
 首先到 obsidian 的設定 > 第三方外掛程式 > 社群外掛程式
 
 搜尋 git
+
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213225724.png)
 
 
@@ -29,6 +35,7 @@
 
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213225805.png)
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213225810.png)
+
 
 設定完後 obsidian 就會幫你在未編輯的幾分後自動 commit & push 了，因為有啟用 Pull on startup 的關係，也不用擔心同步的問題。
 
@@ -43,6 +50,7 @@
 
 但是這種格式在 jekyll 的架構中是沒辦法讀取的， jekyll 的圖檔是放在根目錄的 `assets/images/` 底下，在這裡就要用到 Custom Attachment Location 這個插件去解決圖檔路徑問題。
 
+### 安裝
 一樣到 obsidian 的設定 > 第三方外掛程式 > 社群外掛程式，搜尋 Custom Attachment Location 並且安裝。
 
 你有極大的可能出現這畫面，不曉得為什麼沒辦法手動去修改參數。
@@ -50,7 +58,8 @@
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213224444.png)
 
 不過沒關係，我們可以透過修改 config 的方式去達成一樣的效果。
-附上 .obsidian/plugins/obsidian-custom-attachment-location/data.json
+
+請到專案中的 .obsidian/plugins/obsidian-custom-attachment-location/data.json
 
 ```json
 {
@@ -119,13 +128,14 @@ Ios 手機的做法：
 
 先到 ios obsidian 第三方插件 Git 設定 「Authenticcation/commit author」
 
+
 ![500](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214001301.png)
 
 ![500](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214001301%201.png)
 
 
 ### Personal Access Token
-這 token 在 [github token](https://github.com/settings/tokens)頁面的 Token (classic) > Generate new token > Generate new token (classic)
+這 token 可以在 [github token](https://github.com/settings/tokens) 頁面的 Token (classic) > Generate new token > Generate new token (classic)
 
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214001743.png)
 
@@ -137,7 +147,7 @@ token 到期日自己設定、把 repo 打勾，並送出即可。
 
 設定完後手機就會自動 sync & push github 了
 
-![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214090724.png)
+![500](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214090724.png)
 
 
 ## 參考來源
