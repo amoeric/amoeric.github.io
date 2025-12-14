@@ -7,25 +7,199 @@ permalink: "/tags.html"
 <div class="container px-3 px-md-0">
     <div class="row">
         <div class="col-12">
-        <h1 class="font-weight-bold title h6 text-uppercase mb-4">Tags</h1>
+            <h1 class="font-weight-bold title h6 text-uppercase mb-4">Tags</h1>
 
-        {% for tag in site.tags %}
-        <h4 class="font-weight-bold spanborder text-capitalize" id="{{ tag[0] | downcase }}"><span>{{ tag[0] }}</span></h4>
+            <!-- Tag Cloud -->
+            <div class="tag-cloud text-center py-4 mb-4">
+                {% assign max_count = 1 %}
+                {% for tag in site.tags %}
+                    {% if tag[1].size > max_count %}
+                        {% assign max_count = tag[1].size %}
+                    {% endif %}
+                {% endfor %}
 
-        {% assign pages_list = tag[1] %}
-        {% for post in pages_list %}
-        {% if post.title != null %}
-          {% if group == null or group == post.group %}
+                {% for tag in site.tags %}
+                    {% assign count = tag[1].size %}
+                    {% assign ratio = count | times: 100 | divided_by: max_count %}
+                    {% if ratio > 80 %}
+                        {% assign size_class = "tag-size-5" %}
+                    {% elsif ratio > 60 %}
+                        {% assign size_class = "tag-size-4" %}
+                    {% elsif ratio > 40 %}
+                        {% assign size_class = "tag-size-3" %}
+                    {% elsif ratio > 20 %}
+                        {% assign size_class = "tag-size-2" %}
+                    {% else %}
+                        {% assign size_class = "tag-size-1" %}
+                    {% endif %}
+                    <a href="#" class="tag-item {{ size_class }}" data-tag="{{ tag[0] | downcase }}" data-count="{{ count }}">
+                        {{ tag[0] }} <span class="tag-count">({{ count }})</span>
+                    </a>
+                {% endfor %}
+            </div>
 
-            {% include main-loop-card.html %}
-          {% endif %}
-        {% endif %}
-        {% endfor %}
-        {% assign pages_list = nil %}
-        {% assign group = nil %}
+            <!-- Selected Tag Display -->
+            <div id="selected-tag-section" class="text-center mb-4" style="display: none;">
+                <h3 class="selected-tag-title">
+                    <span id="selected-tag-name"></span>
+                </h3>
+            </div>
 
-        {% endfor %}
+            <!-- Posts Section -->
+            <div id="posts-section">
+                <h4 class="font-weight-bold spanborder mb-4"><span id="posts-title">All Posts</span></h4>
+
+                {% for tag in site.tags %}
+                <div class="tag-posts" data-tag="{{ tag[0] | downcase }}" style="display: none;">
+                    {% for post in tag[1] %}
+                        {% if post.title != null %}
+                            {% include main-loop-card.html %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <!-- All Posts (default view) -->
+                <div id="all-posts">
+                    {% for post in site.posts %}
+                        {% if post.title != null %}
+                            {% include main-loop-card.html %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
 
         </div>
     </div>
 </div>
+
+<style>
+.tag-cloud {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.tag-item {
+    display: inline-block;
+    margin: 8px;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Size classes */
+.tag-size-1 {
+    font-size: 0.85rem;
+    background: rgba(3, 168, 124, 0.15);
+    color: #03a87c;
+}
+.tag-size-2 {
+    font-size: 1rem;
+    background: rgba(3, 168, 124, 0.3);
+    color: #028a66;
+}
+.tag-size-3 {
+    font-size: 1.15rem;
+    background: rgba(3, 168, 124, 0.45);
+    color: #026b4f;
+}
+.tag-size-4 {
+    font-size: 1.3rem;
+    background: rgba(3, 168, 124, 0.6);
+    color: #fff;
+}
+.tag-size-5 {
+    font-size: 1.5rem;
+    background: rgba(3, 168, 124, 0.8);
+    color: #fff;
+    font-weight: bold;
+}
+
+.tag-item:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(3, 168, 124, 0.3);
+}
+
+.tag-item.active {
+    background: #03a87c !important;
+    color: #fff !important;
+    transform: scale(1.15);
+    box-shadow: 0 4px 20px rgba(3, 168, 124, 0.4);
+}
+
+.tag-count {
+    font-size: 0.75em;
+    opacity: 0.8;
+}
+
+.selected-tag-title {
+    color: #03a87c;
+    font-weight: bold;
+}
+
+#selected-tag-section {
+    padding: 20px 0;
+}
+</style>
+
+<script>
+$(function() {
+    var currentTag = null;
+
+    // Handle tag click
+    $('.tag-item').on('click', function(e) {
+        e.preventDefault();
+        var tag = $(this).data('tag');
+
+        // If clicking the same tag, deselect it
+        if (currentTag === tag) {
+            currentTag = null;
+            $('.tag-item').removeClass('active');
+            $('#selected-tag-section').hide();
+            $('#posts-title').text('All Posts');
+            $('.tag-posts').hide();
+            $('#all-posts').show();
+            return;
+        }
+
+        currentTag = tag;
+
+        // Update active state
+        $('.tag-item').removeClass('active');
+        $(this).addClass('active');
+
+        // Scroll tag cloud to center the selected tag
+        var tagCloud = $('.tag-cloud');
+        var tagItem = $(this);
+
+        // Show selected tag section
+        $('#selected-tag-name').text($(this).text().replace(/\(\d+\)/, '').trim());
+        $('#selected-tag-section').show();
+
+        // Update posts title
+        $('#posts-title').text($(this).text().replace(/\(\d+\)/, '').trim() + ' Posts');
+
+        // Show corresponding posts
+        $('#all-posts').hide();
+        $('.tag-posts').hide();
+        $('.tag-posts[data-tag="' + tag + '"]').show();
+
+        // Smooth scroll to posts section
+        $('html, body').animate({
+            scrollTop: $('#posts-section').offset().top - 100
+        }, 500);
+    });
+
+    // Check URL hash on load
+    if (window.location.hash) {
+        var hashTag = window.location.hash.substring(1).toLowerCase();
+        var tagElement = $('.tag-item[data-tag="' + hashTag + '"]');
+        if (tagElement.length) {
+            tagElement.trigger('click');
+        }
+    }
+});
+</script>
