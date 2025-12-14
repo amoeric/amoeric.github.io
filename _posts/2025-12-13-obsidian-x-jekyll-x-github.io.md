@@ -146,8 +146,7 @@ token 到期日自己設定、把 repo 打勾，並送出即可。
 記得把 token 貼到 Git 第三方插件裡面
 
 設定完後手機就會自動 sync & push github 了
-
-![500](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214090724.png)
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214114309.jpeg)
 
 
 ## 參考來源
