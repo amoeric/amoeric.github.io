@@ -103,13 +103,17 @@
 
 ### obsidian sync
 
+Ios 手機的做法：
+- mac airdrop 專案給手機
+- 手機指定儲存到 obsidian 資料夾內
 
+做完後就可以在 obsidian vaults 找到專案了
 
 另外兩種方式：
 - Working Copy app (20 鎂買斷) 
 - 每個月花 8 鎂給 obsidian
 
-有需要手機同步的人可以試試看這兩種方法，以下紀錄 Git 第三方插件手機上的配置。
+另外兩種方式也可以試試看，手機 obsidian vaults 可以開啟後就可以接著以下設定。
 
 ### Github 設定
 
@@ -128,6 +132,12 @@
 token 到期日自己設定、把 repo 打勾，並送出即可。
 
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214001751.png)
+
+記得把 token 貼到 Git 第三方插件裡面
+
+設定完後手機就會自動 sync & push github 了
+
+
 
 
 ## 參考來源
