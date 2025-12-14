@@ -103,7 +103,7 @@
 
 ### obsidian sync
 
-先說結論，目前嘗試把整個專案上傳到 icloud ，再移動到 obsidian 資料夾底下，但是這方式被 obsidian 偵測並阻擋下來，以目前的架構來說沒辦法透過 icloud sync 實現手機端同步。
+
 
 另外兩種方式：
 - Working Copy app (20 鎂買斷) 
