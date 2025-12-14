@@ -21,7 +21,7 @@ authors:
     amoeric:
       name:           amoeric
       site:           https://amoeric.github.io
-      avatar:         /assets/images/amoeric.jpg
+      avatar:         assets/images/amoeric.jpg
       bio:            "一個在高雄的 Ruby On Rails 工程師，從 2019 年三月報名五倍紅寶石第一屆 Astrocamp 至今都在寫 Ruby On Rails。"
       email:
       twitter:
@@ -35,7 +35,7 @@ defaults:
     values:
       layout: post
       author: amoeric
-      avatar: /assets/images/amoeric.jpg
+      avatar: assets/images/amoeric.jpg
 
   # all pages
   - scope:

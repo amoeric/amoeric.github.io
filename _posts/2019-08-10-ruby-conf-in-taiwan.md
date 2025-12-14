@@ -2,7 +2,7 @@
 layout: post
 title: "2019 RubyConf Taiwan 心得"
 author: amoeric
-image: assets/images/rubyconf/matz_sign.jpg
+image: assets/images/rubyconf/matz_sign.JPG
 date: 2019-08-10 1500 +0800
 tags: [ruby, rubyconf, 5xruby]
 toc: true
@@ -18,13 +18,13 @@ Matz：「當然可以啊！ 學程式只要持續的寫就會變厲害，不過
 會後還很親切的跟學員一一合照，我也趁這個機會拜託 Matz 桑簽我的五倍Ｔ  
   
 （不穿了，收藏起來。）人真的很nice!!!
-<img src="/assets/images/rubyconf/matz_sign.jpg" alt="matz_sign">
+<img src="/assets/images/rubyconf/matz_sign.JPG" alt="matz_sign">
 
 ---
 
 ### 7/26 RubyConf Day1  
   
-<img src="/assets/images/rubyconf/conf2019.jpg" alt="conf2019">
+<img src="/assets/images/rubyconf/conf2019.JPG" alt="conf2019">
 
 到會場前超怕趕不上，各種擔憂一一浮現。  
 會場在哪？ 會不會找不到？ 不提前到會不會錯過了什麼？  
@@ -36,7 +36,7 @@ Matz：「當然可以啊！ 學程式只要持續的寫就會變厲害，不過
 ### Rethinking the View Layer with Components  
 Joel Hawksley 是在 GitHub 工作的大大，後來了解才知道是在講述 React Componets 在 View是如何處理，以及用 TDD 產生錯誤與成功的例子，報告分別會變成紅色與綠色，讓我們一目瞭然，會後還送我們 GitHub 的貼紙。  
 
-<img src="/assets/images/rubyconf/stickers.jpg" alt="stickers">
+<img src="/assets/images/rubyconf/stickers.JPG" alt="stickers">
 
 之後的幾場真的大大打擊我的自信，真的講得很深。除了要先聽懂英文還要理解講者們所要表達的東西，每場都想說打開筆電紀錄一下筆記，結果都默默地蓋了回去….  
   
