@@ -2,7 +2,7 @@
 layout: post
 title: "在rails 6安裝font-awesome"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/3.jpg
 date: 2020-09-08 22:00 +0800
 tags: [rails, font-awesome]
 comments: true

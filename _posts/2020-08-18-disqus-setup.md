@@ -2,7 +2,7 @@
 layout: post
 title: "在 jekyll 上使用 disqus"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/2.jpg
 date: 2020-08-18 22:33:00 +0800
 tags: [jekyll, disqus]
 comments: true

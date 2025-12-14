@@ -2,7 +2,7 @@
 layout: post
 title: "如何在 rails 中使用 jsonb 格式？"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/12.jpg
 date: 2021-05-30 11:00 +0800
 tags: [rails, jsonb, postgresql]
 toc: true

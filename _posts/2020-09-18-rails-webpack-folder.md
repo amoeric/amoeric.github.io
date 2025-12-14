@@ -2,7 +2,7 @@
 layout: post
 title: "如何在 rails 6 中使用 webpack"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/13.jpg
 date: 2020-09-08 22:00 +0800
 tags: [rails, webpack]
 comments: true

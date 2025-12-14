@@ -2,7 +2,7 @@
 layout: post
 title: "Jekyll 專案架構介紹"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/16.jpg
 date: 2025-12-13 23:00 +0800
 tags: 
 toc: true

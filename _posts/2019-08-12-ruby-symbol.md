@@ -2,7 +2,7 @@
 layout: post
 title: "Ruby 新手入門隨手記 何謂 :symbol？"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/10.jpg
 date: 2019-08-12 22:00 +0800
 tags: [ruby]
 comments: true

@@ -2,7 +2,7 @@
 layout: post
 title: "Rails 8 中 accepts_nested_attributes_for 無法正常運作的解決方案"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/17.jpg
 date: 2025-08-27 11:00 +0800
 tags: 
 toc: true

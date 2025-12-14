@@ -2,7 +2,7 @@
 layout: post
 title: "ruby->File？FileUtils？Tempfile？Dir？"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/5.jpg
 date: 2021-06-03 16:00 +0800
 tags: [ruby]
 toc: true

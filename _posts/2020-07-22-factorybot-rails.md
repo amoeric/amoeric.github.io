@@ -2,7 +2,7 @@
 layout: post
 title: "Factory_bot_rails 筆記"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/8.jpg
 date: 2020-07-22 1500 +0800
 tags: [factorybot, ruby]
 toc: true

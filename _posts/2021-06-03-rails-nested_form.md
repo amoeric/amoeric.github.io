@@ -2,7 +2,7 @@
 layout: post
 title: "use nesteds_form in rails"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/7.jpg
 date: 2021-06-03 16:00 +0800
 tags: [rails, nesteds_form]
 toc: true

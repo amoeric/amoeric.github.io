@@ -2,7 +2,7 @@
 layout: post
 title: "如何在 jekyll 上使用標籤？"
 author: amoeric
-image: assets/images/1.jpg
+image: assets/images/14.jpg
 date: 2020-08-19 00:40:00 +0800
 tags: [jekyll]
 comments: true
