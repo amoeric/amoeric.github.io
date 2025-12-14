@@ -797,3 +797,66 @@ div.a2a_full_footer {display:none;}
 	 }
  }
  
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .site-content {
+        padding-top: 60px;
+    }
+    article {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+    article img {
+        max-width: 100%;
+        height: auto;
+    }
+    .article-headline {
+        font-size: 1.5rem !important;
+    }
+    .navbar-brand {
+        font-size: 1rem;
+    }
+    .topfirstimage {
+        height: 180px !important;
+    }
+    pre, code {
+        font-size: 13px;
+        overflow-x: auto;
+    }
+    pre {
+        padding: 10px;
+    }
+    .footer {
+        text-align: center;
+    }
+    .footer .row > div {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 991px) {
+    .sticky-top-offset {
+        position: relative !important;
+        top: 0 !important;
+    }
+}
+
+/* Fix for images in articles */
+article img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem auto;
+}
+
+/* Fix for code blocks */
+pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Fix avatar to be circular - respects width attribute */
+img.rounded-circle {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
