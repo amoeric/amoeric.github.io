@@ -17,7 +17,7 @@ comments: true
 ### 1. `sudo apt-get install monit`  
 ### 2. 建立 `sidekiq.conf`
 安裝完成後到 `/etc/monit/conf.d` 底下建立 `sidekiq.conf`， 內容如下  
-{% highlight ruby %}
+```ruby
 #把 your_project 換成專案名稱即可
  check process sidekiq_your_project_staging0
    with pidfile "/home/deploy/your_project/shared/tmp/pids/sidekiq.pid"
@@ -25,7 +25,7 @@ comments: true
 
    stop program = "/bin/su - deploy -c 'cd /home/deploy/your_project/current && /usr/bin/env bundle exec sidekiqctl stop /home/deploy/your_project/shared/tmp/pids/sidekiq.pid'" with timeout 20 seconds
    group your_project-sidekiq
-{% endhighlight ruby %}
+```
 ### 3. sudo vim /etc/monit/monitrc
 編輯 `/etc/monit` 底下的 `monitrc` 檔案，把 http 以下四行註解取消，如下圖  
 <img src="/assets/images/monit/monit_in_monitrc.png" alt="monit_in_monitrc">

@@ -34,7 +34,7 @@ comments: true
 
  2.去[disqus 官網][disqus-home] 註冊會員，照官網流程做的話程式應該會像下面這樣，只要把程式碼貼在要實現的 layout 上即可
 
-{% highlight ruby %}
+```ruby
   # % if page.comments %
     <div id="disqus_thread"></div>
     <script>
@@ -61,9 +61,7 @@ comments: true
       <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
     </noscript>
   #  % endif %
-{% endhighlight %}
-  
-
+```
 ## 結論
 
 本篇只有簡單帶到怎麼用這服務，像是不同付費方案可以用更多延伸功能（有人留言時會寄信到信箱、設定 comment policy...等)

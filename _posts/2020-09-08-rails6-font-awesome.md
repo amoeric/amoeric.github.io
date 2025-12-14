@@ -11,12 +11,11 @@ comments: true
 {: .message }
 
 1.首先透過 `yarn` 安裝
-{% highlight ruby %}
+```ruby
 yarn add @fortawesome/fontawesome-free
-{% endhighlight %}
-
+```
 2.再匯入 `application.scss`（也可以另外建立`font-awesome.scss`再額外`import`）
-{% highlight ruby %}
+```ruby
 #application.scss
 $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 @import '@fortawesome/fontawesome-free/scss/fontawesome';
@@ -24,17 +23,14 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 @import '@fortawesome/fontawesome-free/scss/regular';
 @import '@fortawesome/fontawesome-free/scss/brands';
 @import '@fortawesome/fontawesome-free/scss/v4-shims';
-{% endhighlight %}
-
+```
 3.再修改 `application.js`
-{% highlight ruby %}
+```ruby
 import "@fortawesome/fontawesome-free/js/all";
-{% endhighlight %}
+```
 4.搞定
 
-{% highlight ruby %}
+```ruby
 <i class="fab fa-bootstrap"></i>
-{% endhighlight %}
-
-
+```
 [installfont-awesome]: https://medium.com/@kelishrestha97/how-to-install-font-awesome-with-yarn-in-rails-6-0-c2506543c13d

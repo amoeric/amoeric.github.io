@@ -35,7 +35,7 @@ comments: true
 
 接下來設定 `_layouts/tag.html` 裡面關鍵段落就完成了。
 
-{% highlight ruby %}
+```ruby
   { % if site.tags % }
     { % for current_tag in site.tags % }
       <ul class="my-3">
@@ -48,8 +48,7 @@ comments: true
       </ul>
     { % endfor %}
   { % endif %}
-{% endhighlight %}
-
+```
 -------
 
 # 結論

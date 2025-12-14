@@ -28,7 +28,7 @@ comments: true
 
 # 步驟一：建立 sidekiq.service
 `在 /lib/systemd/system，底下創建 sidekiq.service`
-{% highlight ruby %}
+```ruby
 # Customize this file based on your bundler location, app directory, etc.
 # Put this in /usr/lib/systemd/system (CentOS) or /lib/systemd/system (Ubuntu).
 # Run:
@@ -67,13 +67,9 @@ SyslogIdentifier=sidekiq
 
 [Install]
 WantedBy=multi-user.target
-{% endhighlight ruby %}
-
-
-
-
+```
 # 步驟二：寫 sidekiq:restart
-{% highlight ruby %}
+```ruby
 namespace :sidekiq do
   task :quiet do
     on roles(:app) do
@@ -90,8 +86,7 @@ end
 after 'deploy:starting', 'sidekiq:quiet'
 after 'deploy:reverted', 'sidekiq:restart'
 after 'deploy:published', 'sidekiq:restart'
-{% endhighlight ruby %}
-  
+```
 在 execute :sudo, :systemctl, :restart, :sidekiq 的時候就會執行到 sidekiq.service 了！  
   
 接著如果你的 deploy 使用者使用 sudo 需要密碼的話應該會遇到 `sudo: no tty present and no askpass program specified` 的問題  

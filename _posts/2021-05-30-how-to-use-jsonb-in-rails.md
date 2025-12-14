@@ -41,7 +41,7 @@ toc: true
 GIN 索引是「反向索引」，適用於包含多個值的組合的資料值，例如陣列。反向索引包含每個組合值的單獨項目，並且可以有效地處理測試特定組合值是否存在的查詢。</blockquote>
 
   
-{% highlight ruby %}
+```ruby
 #some_migration
   def change
     change_table :posts, bulk: true do |t|
@@ -49,51 +49,36 @@ GIN 索引是「反向索引」，適用於包含多個值的組合的資料值�
       t.index :address, using: :gin
     end
   end
-{% endhighlight ruby %}
-
-
-
+```
 #### Model
 
 只要用 `Rails` 的 `Store` 功能 accessors 你要的 `key` 就好了
 
-{% highlight ruby %}
+```ruby
   store :address, accessors: [:town, :city]
-{% endhighlight ruby %}
-
-
-
+```
 #### Form
 
 在表單中只需要輸入對應的 `accessors key`就可以了  
 
-{% highlight ruby %}
+```ruby
   <%= f.collection_radio_buttons :city, ['高雄', '台北'] %>
   <%= f.collection_radio_buttons :town, ['鳳山區', '前鎮區'] %>
-{% endhighlight ruby %}
-
-
-
+```
 #### Controller
 
 這邊也跟平常一樣，不需要設定
 
-{% highlight ruby %}
+```ruby
   params.require(:post).permit(:city, :town)
-{% endhighlight ruby %}
-
-
-
+```
 #### 儲存後的呈現會像是  
   
 在 console 叫出 address 欄位  
   
-{% highlight ruby %}
+```ruby
   address: {"city"=>"高雄", "town"=>"鳳山區"}
-{% endhighlight ruby %}
-
-
-
+```
 ### 結論
 
 使用 `jsonb` 加上 `rails store` combo 讓效率大大提升，像這類型的欄位未來如果要修改也不用再新增 migration 來新增或者修改了！

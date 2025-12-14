@@ -24,37 +24,35 @@ comments: true
 
 # 了解了 Webpack 優點後，接著實際在 rails 中使用
 # 1.新增 rails 6 專案
-{% highlight ruby %}
+```ruby
  rails new trbweb 
-{% endhighlight ruby %}
+```
 你會發現在 `console` 裡面多了個 `yarn` 這個東西在幫我們安裝套件，而相關的檔案會放在 `node_modules` 這個資料夾。 專案裡面該裝什麼東西都寫在 `package.json` ，然而專案是不會把 `node_modules` 這個資料夾 `commit` 上去的，而是會去看 `package.json` 來安裝對應的套件。
 
 安裝好後，看 `application.html.erb` 會發現
-{% highlight ruby %}
+```ruby
 <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-{% endhighlight ruby %}
+```
 已經被換成
-{% highlight ruby %}
+```ruby
 <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-{% endhighlight ruby %}
-
+```
 正式宣告 `js` 的部分由 `webpack` 處理。
 
 # 2.安裝 `foreman`
 
 要邊跑 `rails` 邊執行 `webpack` 還需要再安裝 `foreman` 來處理
-{% highlight ruby %}
+```ruby
 group :development do
   gem 'foreman'
 end
-{% endhighlight ruby %}
+```
 建立 `Profile` 檔案在專案中(與 `Gemfile` 同層)
-{% highlight ruby %}
+```ruby
   #Profile
   web: bin/rails server -p 3000
   webpacker: bin/webpack-dev-server
-{% endhighlight ruby %}
-
+```
 接著只要把以往啟動的指令從 `rails s` 改成 `foreman start` 就可以囉!
 
 # 3. 讓 Webpack 處理 css
@@ -62,11 +60,11 @@ end
 
 
 * ### 首先安裝 bootstrap jquery popper.js
-{% highlight javascript %}
+```javascript
 yarn add bootstrap jquery popper.js
-{% endhighlight javascript %}
+```
 * ### 接著把 jquery、popper 設定在 environment.js 中
-{% highlight ruby %}
+```ruby
 #environment.js
 const { environment } = require('@rails/webpacker')
 
@@ -80,36 +78,33 @@ environment.plugins.append('Provide',
 )
 
 module.exports = environment
-{% endhighlight ruby %}
-
+```
 * ### js、css 分類
 首先在 `app/javascript` 下分別建立 `stylesheets`、 `js` 資料夾，建立成功後會跟下面結構一樣。
-{% highlight ruby %}
+```ruby
 javascript
   -  js
   -  channels
   -  packs
   -  stylesheets
-{% endhighlight ruby %}
+```
 * ### require  
 光是這樣還不夠，還需要在 `packs/application.js` 中， require `stylesheets`、`js` 兩個資料夾
 
-{% highlight ruby %}
+```ruby
 require("stylesheets")
 require("js")
-{% endhighlight ruby %}
-
+```
 * ### `require` 後預設會找資料夾底下的 `index`檔
 
-{% highlight ruby %}
+```ruby
 #stylesheets/index.scss
 @import "~bootstrap/scss/bootstrap";
 #index.html.erb
 <div class="alert alert-primary" role="alert">
   A simple primary alert—check it out!
 </div>
-{% endhighlight ruby %}
-
+```
 如果沒意外就會看到 `bootstrap` 成功套用拉～
 
 

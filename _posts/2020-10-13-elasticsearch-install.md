@@ -18,15 +18,13 @@ comments: true
   
 這裡選擇安裝 OpenJDK 8
 
-{% highlight ruby %}
+```ruby
 sudo apt install openjdk-8-jdk
-{% endhighlight ruby %}
-  
+```
 安裝後打下面指令確認 java 版本
-{% highlight ruby %}
+```ruby
 java -version
-{% endhighlight ruby %}
-
+```
 看到這訊息就表示安裝成功了
 <img src="/assets/images/elasticsearch-install/java-version.png" alt="java-version">
   
@@ -36,63 +34,55 @@ java -version
 
 * 步驟一：下載和安裝公鑰  
   
-{% highlight ruby %}
+```ruby
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-{% endhighlight ruby %}  
-  
+```
 沒意外的話視窗會顯示 `OK`
   
 * 步驟二：
 
 更新 apt 、 安裝 apt-transport-https  
   
-{% highlight ruby %}
+```ruby
 sudo apt update
 sudo apt install apt-transport-https
-{% endhighlight ruby %} 
-
+```
 * 步驟三：
   
 將儲存庫定義保存到 `/etc/apt/sources.list.d/elastic-6.x.list`  
   
-{% highlight ruby %}
+```ruby
 echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
-{% endhighlight ruby %} 
-
+```
 **這裡的6.x是版本號的意思，如果要安裝特定版本可以修改，例如要安裝7的版本可以改成 7.x**  
   
 * 步驟四：
   
 更新 apt 並安裝 elasticsearch  
-{% highlight ruby %}
+```ruby
 sudo apt update
 sudo apt install elasticsearch
-{% endhighlight ruby %} 
-   
-
+```
 跑完後就安裝成功了！不過安裝完成後並不會自動執行，還需要  
-{% highlight ruby %}
+```ruby
 sudo systemctl enable elasticsearch.service
 sudo systemctl start elasticsearch.service
-{% endhighlight ruby %} 
-  
+```
 # 確認是否執行
 
 可以透過以下方式確認 elasticsearch 有沒有在執行  
 
-{% highlight ruby %}
+```ruby
 curl -X GET "localhost:9200/"
-{% endhighlight ruby %} 
-  
+```
 應該會看到下面畫面
   
 <img src="/assets/images/elasticsearch-install/elastic-version2.png" alt="elastic-version2">
   
 又或者
-{% highlight ruby %}
+```ruby
 sudo service elasticsearch status
-{% endhighlight ruby %} 
-
+```
 <img src="/assets/images/elasticsearch-install/elastic-status.png" alt="elastic-status">
 
 **如果出錯的話也可以透過這指令查詢**
@@ -107,10 +97,9 @@ sudo service elasticsearch status
 
 * 方法一
 
-{% highlight ruby %}
+```ruby
 curl -X GET "localhost:9200/"
-{% endhighlight ruby %} 
-
+```
 <img src="/assets/images/elasticsearch-install/elastic-version2.png" alt="elastic-version2">
 
 這裡的 `version number` 就是版本號了
@@ -119,11 +108,10 @@ curl -X GET "localhost:9200/"
 
 由於方法一僅限於在安裝成功後才能確認，方法二安裝失敗也可以用哦！
 
-{% highlight ruby %}
+```ruby
 cd /usr/share/elasticsearch
 sudo ./bin/elasticsearch --version
-{% endhighlight ruby %} 
-
+```
 <img src="/assets/images/elasticsearch-install/elastic-version1.png" alt="elastic-version1">
 
 # 結論
