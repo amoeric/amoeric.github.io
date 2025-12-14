@@ -1,7 +1,9 @@
 ---
-layout: single
-title:  "Rails 用 carrierwave 上傳至 AWS s3"
-date:   2019-08-13 22:00 +0800
+layout: post
+title: "Rails 用 carrierwave 上傳至 AWS s3"
+author: amoeric
+image: assets/images/aws-upload-img/awsstep1.png
+date: 2019-08-13 22:00 +0800
 tags: [rails, AWS]
 comments: true
 ---

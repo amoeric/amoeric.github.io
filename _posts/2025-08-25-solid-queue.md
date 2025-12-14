@@ -1,11 +1,12 @@
 ---
-layout: single
+layout: post
 title: "Rails 8 Solid Queue 安裝與設定完整指南"
+author: amoeric
+image: assets/images/solid_queue/1.png
 date: 2025-08-25 10:00 +0800
 tags: [rails, rails-8, solid-queue, background-jobs, active-job]
 toc: true
 ---
-
 ## 概述
 
 Rails 8 已經將 `solid_queue` 移進預設使用的 Gem，這篇文章記錄 `solid_queue` 的完整安裝流程和設定方法。

@@ -1,11 +1,11 @@
 ---
-layout: single
-title: 使用 Github io 建立自己的 Blog 
+layout: post
+title: "使用 Github io 建立自己的 Blog "
+author: amoeric
+image: assets/images/create-github-io/create_git_repo.png
 date: 2021-05-29 1500 +0800
 tags: github
 ---
-
-
 想免費擁有一個屬於自己的網站的朋友有福了！
 現在可以透過 github.io 去建立一個屬於自己的網站囉
 

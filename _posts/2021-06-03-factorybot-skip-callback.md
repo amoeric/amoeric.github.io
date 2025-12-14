@@ -1,12 +1,12 @@
 ---
-layout: single
-cover: 'assets/images/summit.jpg'
-title: how to skip callback in rspec
+layout: post
+title: "how to skip callback in rspec"
+author: amoeric
+image: assets/images/summit.jpg
 date: 2021-06-03 16:50 +0800
 tags: [rails, factorybot, skip_callback]
 comments: true
 ---
-
 當寫了一個 callback 導致整個 spec 爆炸時，可以使用 `skip_callback` method 讓 spec 恢復正常
 
 ```ruby

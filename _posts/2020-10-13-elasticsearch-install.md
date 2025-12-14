@@ -1,11 +1,12 @@
 ---
-layout: single
-title:  "在 Ubuntu 上安裝 Elasticsearch"
-date:   2020-10-13 19:23 +0800
+layout: post
+title: "在 Ubuntu 上安裝 Elasticsearch"
+author: amoeric
+image: assets/images/elasticsearch-install/java-version.png
+date: 2020-10-13 19:23 +0800
 tags: [elasticsearch]
 comments: true
 ---
-
 最近要在新主機上安裝 elasticsearch，但是由於運行中專案主機上面版本是 6.8.8 ， 發文前版本已經更新到 7.9.2 了！  
 至於要怎麼安裝以前的版本這部分，摸索了好久才搞定，在此紀錄安裝過程。
 

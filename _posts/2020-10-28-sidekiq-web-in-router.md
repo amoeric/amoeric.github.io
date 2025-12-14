@@ -1,10 +1,11 @@
 ---
-layout: single
-title:  "sidekiq web-ui session destroy"
-date:   2020-10-28 1500 +0800
+layout: post
+title: "sidekiq web-ui session destroy"
+author: amoeric
+image: assets/images/1.jpg
+date: 2020-10-28 1500 +0800
 tags: [sidekiq]
 ---
-
 最近用 `sidekiq` 後台頁面時遇到了一個問題  
 在 `routes` 中如果要使用 `devise` 限制 `sidekiq` 的使用對象的話  
 登入後每切換一個頁面就會自動登出  

@@ -1,10 +1,11 @@
 ---
-layout: single
-title:  "Send error notice to slack"
-date:   2019-10-03 1500 +0800
+layout: post
+title: "Send error notice to slack"
+author: amoeric
+image: assets/images/slack/webhook_url.png
+date: 2019-10-03 1500 +0800
 tags: [rails, slack]
 ---
-
 做專案時難免會遇到錯誤
 那麼要如何收到第一時間的通知呢？  
 

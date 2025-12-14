@@ -1,11 +1,12 @@
 ---
-layout: single
-title: 在 active_admin 中使用 select2
+layout: post
+title: "在 active_admin 中使用 select2"
+author: amoeric
+image: assets/images/active_admin/yarn_activeadmin_addons.png
 date: 2021-07-04 16:00 +0800
 tags: [rails, active_admin, activeadmin_addons, select2, 雷]
 toc: true
 ---
-
 在試著用 rails 建立自己的部落格時，需要在 active_admin 使用的後台建立 post 並使用 select2 建立 tags。  
 然而，當我試著用[正常方式](https://stackoverflow.com/questions/59156567/how-to-require-select2-with-webpacker-rails)處理時，卻一直跑出 <mark>TypeError: $(...).select2 is not a function</mark> 的錯誤...  
   

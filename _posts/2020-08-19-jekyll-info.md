@@ -1,11 +1,12 @@
 ---
-layout: single
-title:  "如何在 jekyll 上使用標籤？"
-date:   2020-08-19 00:40:00 +0800
+layout: post
+title: "如何在 jekyll 上使用標籤？"
+author: amoeric
+image: assets/images/1.jpg
+date: 2020-08-19 00:40:00 +0800
 tags: [jekyll]
 comments: true
 ---
-
 >其實在各網站上都有相關的處理方法，解法也百百種，在此紀錄我的奇耙解法XDD
 
 # 在此之前

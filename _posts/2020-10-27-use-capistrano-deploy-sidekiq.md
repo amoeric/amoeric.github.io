@@ -1,12 +1,12 @@
 ---
-layout: single
-title:  "用 capistrano 部署 sidekiq 6"
-date:   2020-10-27 2230 +0800
+layout: post
+title: "用 capistrano 部署 sidekiq 6"
+author: amoeric
+image: assets/images/sidekiq/sidekiq_visudo.png
+date: 2020-10-27 2230 +0800
 tags: [capistrano, sidekiq]
 comments: true
 ---
-
-
 如何在deploy時讓sidekiq在背景時執行呢？
 原本打算用這個 gem [capistrano-sidekiq](https://github.com/seuros/capistrano-sidekiq) 處理  
   

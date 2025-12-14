@@ -1,11 +1,12 @@
 ---
-layout: single
-title:  "在 jekyll 上使用 disqus"
-date:   2020-08-18 22:33:00 +0800
+layout: post
+title: "在 jekyll 上使用 disqus"
+author: amoeric
+image: assets/images/1.jpg
+date: 2020-08-18 22:33:00 +0800
 tags: [jekyll, disqus]
 comments: true
 ---
-
 # disqus 介紹
  是一個可以讓網頁快速產生留言功能的服務，透過簡單的埋 code 的動作就可以搞定!
  

@@ -1,11 +1,12 @@
 ---
-layout: single
+layout: post
 title: "Rails 8 Solid Cache 安裝與設定完整指南"
+author: amoeric
+image: assets/images/solid_cache/1.png
 date: 2025-08-23 16:00 +0800
 tags: [rails, rails-8, solid-cache, caching, database]
 toc: true
 ---
-
 ## 概述
 
 在 Rails 8 中，預設使用 [Solid Cache](https://github.com/rails/solid_cache) Gem 來處理快取儲存（Rails 7.1 以上則是選用）。這篇文章記錄安裝和設定 `solid_cache` 的完整過程。

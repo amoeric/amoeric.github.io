@@ -1,13 +1,12 @@
 ---
-layout: single
-title: use nesteds_form in rails
+layout: post
+title: "use nesteds_form in rails"
+author: amoeric
+image: assets/images/1.jpg
 date: 2021-06-03 16:00 +0800
 tags: [rails, nesteds_form]
 toc: true
 ---
-
-
-
 在 rails 中，如果要在同個表單下一併儲存關聯性物件常常會用到 nested_forms 的功能，以下介紹。
 
 

@@ -1,15 +1,12 @@
 ---
-layout: single
-title: Rails 8 中 accepts_nested_attributes_for 無法正常運作的解決方案
+layout: post
+title: "Rails 8 中 accepts_nested_attributes_for 無法正常運作的解決方案"
+author: amoeric
+image: assets/images/1.jpg
 date: 2025-08-27 11:00 +0800
-tags:
-  - rails
-  - rails-8
-  - accepts-nested-attributes-for
-  - params-except
+tags: 
 toc: true
 ---
-
 ## 問題描述
 
 升級到 Rails 8 後，將 `params.require` 改為 `params.except` 的用法後，遇到了 `accepts_nested_attributes_for` 無法正常運作的問題。

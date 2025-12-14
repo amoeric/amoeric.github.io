@@ -1,12 +1,12 @@
 ---
-layout: single
-title:  "用 monit 監控 sidekiq 是否正常運作"
-date:   2020-10-28 1500 +0800
+layout: post
+title: "用 monit 監控 sidekiq 是否正常運作"
+author: amoeric
+image: assets/images/monit/monit_in_monitrc.png
+date: 2020-10-28 1500 +0800
 tags: [sidekiq, monit]
 comments: true
 ---
-
-
 由於 `sidekiq` 不是可靠的 `process`，有時候會自己掛掉，所以需要額外安裝監控程式去防止 `sidekiq` 掛掉。所以決定使用 `monit` 來監控 `sidekiq` 是否正常運行，本文紀錄 `monit` 安裝過程遇到的狀況與排除。
 
 ---

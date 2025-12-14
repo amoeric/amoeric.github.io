@@ -1,14 +1,8 @@
 ---
-  layout: single
-  title: 導入 obsidian 隨時隨地編輯 github.io
-  date: 2025-12-13 11:00 +0800
-  tags:
-    - obsidian
-    - githubio
-    - jekyll
-  toc: true
+layout: post
+author: amoeric
+image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213225724.png
 ---
-
 本文章是在已經完成用 jekyll 推上 github.io 的基礎上進行的設置，如果還沒有設定的話請參考 [建立你自己的 github.io](https://amoeric.github.io/create_your_github_io/)、[jekyll 架構介紹](https://amoeric.github.io/jekyll-architecture/)，也歡迎點擊 jekyll 標籤看更多相關文章。
 
 整體流程會是：

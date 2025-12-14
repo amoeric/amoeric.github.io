@@ -1,11 +1,12 @@
 ---
-layout: single
-title: 如何修改大大的 github action uses ?
+layout: post
+title: "如何修改大大的 github action uses ?"
+author: amoeric
+image: assets/images/github_action_uses/post_css_error.png
 date: 2021-07-04 16:00 +0800
 tags: [github_action, jekyll, Docker, DevOps]
 toc: true
 ---
-
 在使用 Jekyll 建立自己的 blog 時，我想用 <mark>Tailwindcss</mark> 手刻部落格，然而在推上 github 跑 action 時遇到 <mark>Conversion error: Jekyll::Converters::PostCss</mark>。
 
 

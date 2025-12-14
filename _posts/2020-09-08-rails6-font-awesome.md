@@ -1,11 +1,12 @@
 ---
-layout: single
-title:  "在rails 6安裝font-awesome"
-date:   2020-09-08 22:00 +0800
+layout: post
+title: "在rails 6安裝font-awesome"
+author: amoeric
+image: assets/images/1.jpg
+date: 2020-09-08 22:00 +0800
 tags: [rails, font-awesome]
 comments: true
 ---
-
 參考至 [此篇教學][installfont-awesome]，額外透過此篇文章紀錄安裝方法。  
 {: .message }
 

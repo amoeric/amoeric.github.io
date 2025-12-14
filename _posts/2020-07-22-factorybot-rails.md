@@ -1,12 +1,12 @@
 ---
-layout: single
-title:  "Factory_bot_rails 筆記"
-date:   2020-07-22 1500 +0800
+layout: post
+title: "Factory_bot_rails 筆記"
+author: amoeric
+image: assets/images/1.jpg
+date: 2020-07-22 1500 +0800
 tags: [factorybot, ruby]
 toc: true
 ---
-
-
 在 factory_bot_rails 裡面 Callbacks 分為四種
 順序依序為：after(:build) -> before(:create) -> after(:create)
 另外 after(:stub) #在 build_stubbed 建立物件時使用

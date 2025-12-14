@@ -1,13 +1,12 @@
 ---
-layout: single
-title: ruby->File？FileUtils？Tempfile？Dir？
+layout: post
+title: "ruby->File？FileUtils？Tempfile？Dir？"
+author: amoeric
+image: assets/images/1.jpg
 date: 2021-06-03 16:00 +0800
 tags: [ruby]
 toc: true
 ---
-
-
-
 FileUtils 、 File 、 Dir 、甚至還有一個 Tempfile 第一次接觸時都不知道該從何下手，使用時機是哪個？
 
 本文會介紹各種常用的技巧，讓你在寫程式的時候能夠知道該用什麼處理的好。

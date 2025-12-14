@@ -1,13 +1,12 @@
 ---
-layout: single
-title: Jekyll 專案架構介紹
+layout: post
+title: "Jekyll 專案架構介紹"
+author: amoeric
+image: assets/images/1.jpg
 date: 2025-12-13 23:00 +0800
-tags:
-  - jekyll
-  - githubio
+tags: 
 toc: true
 ---
-
 本文章介紹 Jekyll 專案的基本架構，幫助你快速理解各個資料夾和檔案的用途。
 
 ## 目錄結構

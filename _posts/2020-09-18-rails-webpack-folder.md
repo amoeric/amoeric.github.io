@@ -1,12 +1,12 @@
 ---
-layout: single
-title:  "如何在 rails 6 中使用 webpack"
-date:   2020-09-08 22:00 +0800
+layout: post
+title: "如何在 rails 6 中使用 webpack"
+author: amoeric
+image: assets/images/1.jpg
+date: 2020-09-08 22:00 +0800
 tags: [rails, webpack]
 comments: true
 ---
-
-
 本人對 webpack 接觸機會不多，之前也只有在寫活動專案才會用 rails 5 的版本下安裝 webpack (拿來用 Vue)，然而 rails 6 開始就把 webpack 當作預設工具，讓效能更加提升。  
 
 本文將會介紹 webpack 是什麼、為什麼要用、rails 中如何使用 webpack

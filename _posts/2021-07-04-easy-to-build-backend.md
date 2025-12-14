@@ -1,11 +1,12 @@
 ---
-layout: single
-title: 使用 active_admin 快速打造後台
+layout: post
+title: "使用 active_admin 快速打造後台"
+author: amoeric
+image: assets/images/active_admin/install_com.png
 date: 2021-07-04 16:00 +0800
 tags: [rails, active_admin]
 toc: true
 ---
-
 每每寫小專案或活動網站時，總需要一個簡單的後台，而又不想花費精力寫個後台時，就可以用 <mark>active_admin</mark> 來快速打造一個簡易的後台。
 
 

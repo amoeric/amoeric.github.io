@@ -1,13 +1,12 @@
 ---
-layout: single
-title:  "2019 RubyConf Taiwan 心得"
-date:   2019-08-10 1500 +0800
+layout: post
+title: "2019 RubyConf Taiwan 心得"
+author: amoeric
+image: assets/images/rubyconf/matz_sign.jpg
+date: 2019-08-10 1500 +0800
 tags: [ruby, rubyconf, 5xruby]
 toc: true
 ---
-
-
-
 ### 7/25 Ruby Conf 前夕
 「Matz is nice so we are nice!」 
 {: .message }  

@@ -1,12 +1,12 @@
 ---
-layout: single
-title:  "Ruby 新手入門隨手記 何謂 :symbol？"
-date:   2019-08-12 22:00 +0800
+layout: post
+title: "Ruby 新手入門隨手記 何謂 :symbol？"
+author: amoeric
+image: assets/images/1.jpg
+date: 2019-08-12 22:00 +0800
 tags: [ruby]
 comments: true
 ---
-
-
 :posts 還記得第一次用rails的時候被這火星文給震懾住
 {: .message }
 

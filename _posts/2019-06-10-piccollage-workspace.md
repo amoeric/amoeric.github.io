@@ -1,10 +1,11 @@
 ---
-layout: single
-title:  "參觀 PicCollage 工作環境心得"
-date:   2019-06-10 1500 +0800
+layout: post
+title: "參觀 PicCollage 工作環境心得"
+author: amoeric
+image: assets/images/piccollage/piccollage.jpeg
+date: 2019-06-10 1500 +0800
 tags: [5xruby, PicCollage]
 ---
-
 ---
 <img src="/assets/images/piccollage/piccollage.jpeg" alt="piccollage">
 

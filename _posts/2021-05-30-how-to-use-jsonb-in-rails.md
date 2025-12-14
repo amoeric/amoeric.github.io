@@ -1,14 +1,12 @@
 ---
-layout: single
-title: 如何在 rails 中使用 jsonb 格式？
+layout: post
+title: "如何在 rails 中使用 jsonb 格式？"
+author: amoeric
+image: assets/images/1.jpg
 date: 2021-05-30 11:00 +0800
 tags: [rails, jsonb, postgresql]
 toc: true
 ---
-  
-
-
-
 在設計專案 DB 時，時常遇到像是地址這種一大層裡面包了多層小層的資料，如果設計 DB 時可以用大層的設計去避免掉多開很多無謂欄位是不是很好呢？
 
 

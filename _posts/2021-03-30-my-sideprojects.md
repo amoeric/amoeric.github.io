@@ -1,11 +1,12 @@
 ---
-layout: single
-title:  "My Sideprojects"
-date:   2021-03-30 1500 +0800
+layout: post
+title: "My Sideprojects"
+author: amoeric
+image: assets/images/sideprojects/lineBot.jpg
+date: 2021-03-30 1500 +0800
 tags: [sideproject]
 toc: true
 ---
-
 ### 自製 ruby gem - SpreadsheetTransfer
 因為各專案在爬 google speadsheet 的處理方式都有所不同，也要額外理解其中的架構，導致不必要的時間浪費。
 所以就自製了一個 gem 來處理這件事情，透過簡單的 yml 檔設定就可以完成資料取得和轉換。
