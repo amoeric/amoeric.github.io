@@ -918,3 +918,9 @@ img.rounded-circle {
         height: 45px;
     }
 }
+
+/* Post cover image */
+.post-cover {
+    max-height: 400px;
+    object-fit: contain;
+}
