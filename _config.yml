@@ -2,7 +2,7 @@
 name: 'amoeric Blogs'
 description: '一個在高雄的 Ruby On Rails 工程師，從 2019 年三月報名五倍紅寶石第一屆 Astrocamp 至今都在寫 Ruby On Rails。'
 logo: 'assets/images/logo.png'
-favicon: 'assets/images/favicon.ico'
+favicon: 'assets/images/github.png'
 baseurl: ''
 disqus: ''
 email: ''
