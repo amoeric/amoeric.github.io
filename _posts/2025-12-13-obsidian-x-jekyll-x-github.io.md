@@ -89,13 +89,13 @@ image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsi
 }
 ```
 
-| 設定項                         | 原本                      | 修改後                                                             |
-| --------------------------- | ----------------------- | --------------------------------------------------------------- |
-| attachmentFolderPath        | ./assets/images         | assets/images/${noteFileName}                                   |
-| attachmentRenameMode        | Only pasted images      | All                                                             |
-| generatedAttachmentFileName | ${noteName}-${date:...} | ${noteFileName}-${date:YYYYMMDDHHmmss}                          |
-| markdownUrlFormat           | (空)                     | ../assets/images/${noteFileName}/${generatedAttachmentFileName} |
-| shouldRenameAttachmentFiles | false                   | true                                                            |
+| 設定項 | 原本 | 修改後 |
+| --- | --- | --- |
+| attachmentFolderPath | `./assets/images` | `assets/images/${noteFileName}` |
+| attachmentRenameMode | Only pasted images | All |
+| generatedAttachmentFileName | `${noteName}-${date:...}` | `${noteFileName}-${date:YYYYMMDDHHmmss}` |
+| markdownUrlFormat | (空) | `../assets/images/${noteFileName}/${generatedAttachmentFileName}` |
+| shouldRenameAttachmentFiles | false | true |
 
   效果：
   - 圖片會存到 assets/images/筆記名稱/ 資料夾（從根目錄開始）
@@ -145,4 +145,4 @@ token 到期日自己設定、把 repo 打勾，並送出即可。
 
 
 ## 參考來源
-- https://www.youtube.com/watch?v=IlNOhNeWGgY
+- [https://www.youtube.com/watch?v=IlNOhNeWGgY](https://www.youtube.com/watch?v=IlNOhNeWGgY)

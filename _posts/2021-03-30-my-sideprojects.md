@@ -16,7 +16,7 @@ toc: true
 ### Game Center
 透過寫平常隨處可見的小遊戲來練習 js，在這 repo 裡有 OOXX、數獨、幾A幾B。
 
-- github repo: https://github.com/amoeric/game_center
+- github repo: [https://github.com/amoeric/game_center](https://github.com/amoeric/game_center)
 
 ### My template
 由於之前工作時常需要開個小專案，所以寫了一個 for rails 5.2.3 版本的 template 好讓我可以 <del>提早下班</del>

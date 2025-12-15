@@ -39,7 +39,7 @@ bucket_name：5x-pet-collage
 <img src="/assets/images/aws-upload-img/awsstep3.png" alt="awsstep3">
 
 # 4.從物件ＵＲＬ可以得知
-https://5x-pet-collage.s3-ap-northeast-1.amazonaws.com/  
+[https://5x-pet-collage.s3-ap-northeast-1.amazonaws.com/](https://5x-pet-collage.s3-ap-northeast-1.amazonaws.com/)
 目前為止五項有了三項
 ```ruby
 host:               "s3-ap-northeast-1.amazonaws.com",     #主機位置

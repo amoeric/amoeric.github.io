@@ -32,7 +32,7 @@ brew services start 時會產生一個臨時的 plist 檔，要修改內容的�
 
 例如：`/usr/local/Cellar/mysql/8.0.23_1/homebrew.mxcl.mysql.plist`
 
-https://stackoverflow.com/questions/36089384/brew-services-where-to-edit-configuration
+[https://stackoverflow.com/questions/36089384/brew-services-where-to-edit-configuration](https://stackoverflow.com/questions/36089384/brew-services-where-to-edit-configuration)
 
 
 
@@ -94,9 +94,9 @@ https://stackoverflow.com/questions/36089384/brew-services-where-to-edit-configu
 
 #### 解法
 
-https://blog.csdn.net/weixin_43770545/article/details/88854427
+[https://blog.csdn.net/weixin_43770545/article/details/88854427](https://blog.csdn.net/weixin_43770545/article/details/88854427)
 
-https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded
+[https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded](https://stackoverflow.com/questions/49194719/authentication-plugin-caching-sha2-password-cannot-be-loaded)
 
 使用 mysql8 用 root 權限登入操作
 ```bash
@@ -132,7 +132,7 @@ alias mysql80="mysqlv mysql"
 source ~/.bash_profile
 ```
 
-https://gist.github.com/ivanvermeyen/c2dfb8ad55a4fb699c5913a09422c1d9#switch-mysql-versions
+[https://gist.github.com/ivanvermeyen/c2dfb8ad55a4fb699c5913a09422c1d9#switch-mysql-versions](https://gist.github.com/ivanvermeyen/c2dfb8ad55a4fb699c5913a09422c1d9#switch-mysql-versions)
 
 ## 解決 Access denied for user 'root'@'localhost' (using password: YES) 問題
 
@@ -142,7 +142,7 @@ FLUSH PRIVILEGES;
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'YourMyNewPass';
 exit;
 ```
-https://peterli.website/%E5%9C%A8-mac-os-x-%E4%B8%8B%E5%AE%89%E8%A3%9D-mysql-%E8%88%87%E7%B0%A1%E6%98%93%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/
+[https://peterli.website/%E5%9C%A8-mac-os-x-%E4%B8%8B%E5%AE%89%E8%A3%9D-mysql-%E8%88%87%E7%B0%A1%E6%98%93%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/](https://peterli.website/%E5%9C%A8-mac-os-x-%E4%B8%8B%E5%AE%89%E8%A3%9D-mysql-%E8%88%87%E7%B0%A1%E6%98%93%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4/)
 
 ## 其他指令
 
@@ -153,7 +153,7 @@ ps -feax | grep mysqld
 launchctl list | grep mysql
 ```
 
-https://serverfault.com/questions/459316/error-2002-mysql-socket-tmp-mysql-sock
+[https://serverfault.com/questions/459316/error-2002-mysql-socket-tmp-mysql-sock](https://serverfault.com/questions/459316/error-2002-mysql-socket-tmp-mysql-sock)
 
 
 
@@ -183,7 +183,7 @@ cat /usr/local/var/mysql@8.0/xuhuangzhandeMacBook-Air.local.err
 mysql_secure_installation
 ```
 
-https://at0dd.medium.com/install-mysql-5-7-on-mac-os-mojave-cd07ec936034
+[https://at0dd.medium.com/install-mysql-5-7-on-mac-os-mojave-cd07ec936034](https://at0dd.medium.com/install-mysql-5-7-on-mac-os-mojave-cd07ec936034)
 
 
 
@@ -211,4 +211,4 @@ mysql -V
 
 砍掉重練
 
-https://stackoverflow.com/questions/56676869/brew-start-an-older-version-of-mysql-service-but-how-to-connect-to-it
+[https://stackoverflow.com/questions/56676869/brew-start-an-older-version-of-mysql-service-but-how-to-connect-to-it](https://stackoverflow.com/questions/56676869/brew-start-an-older-version-of-mysql-service-but-how-to-connect-to-it)
