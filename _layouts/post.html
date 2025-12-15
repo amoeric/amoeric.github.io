@@ -6,7 +6,7 @@ layout: default
 <!-- Full-width Image -->
 {% if page.image %}
 <div class="container-fluid p-0 mb-4">
-    <img class="w-100" src="{% if page.image contains "://" %}{{ page.image }}{% else %}{{ site.baseurl }}/{{ page.image }}{% endif %}" alt="{{ page.title }}" style="max-height: 400px; object-fit: cover;">
+    <img class="w-100" src="{% if page.image contains "://" %}{{ page.image }}{% else %}{{ site.baseurl }}/{{ page.image }}{% endif %}" alt="{{ page.title }}">
 </div>
 {% endif %}
 
