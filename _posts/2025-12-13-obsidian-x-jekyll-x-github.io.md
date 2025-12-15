@@ -1,6 +1,7 @@
 ---
 layout: post
 author: amoeric
+tags: [obsidian, jekyll, githubio]
 image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251215124341.png
 ---
 

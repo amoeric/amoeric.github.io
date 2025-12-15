@@ -8,13 +8,11 @@
 		   {{ post.excerpt  | strip_html | strip_newlines | truncate: 186}}
 		</p>
 		{% if post.tags.size > 0 %}
-		<small class="d-block text-muted">
-			<span class="taglist">
+		<div class="taglist mb-2">
 			{% for tag in post.tags %}
-			<a class="text-muted smoothscroll" href="{{site.baseurl}}/tags.html#{{ tag | downcase }}">{{ tag }}</a><span class="sep">, </span>
+			<a class="btn btn-light btn-sm mb-1" href="{{site.baseurl}}/tags.html#{{ tag | downcase }}">{{ tag }}</a>
 			{% endfor %}
-			</span>
-		</small>
+		</div>
 		{% endif %}
 		<small class="text-muted">
 			{{ post.date | date: '%b %d, %Y' }}
