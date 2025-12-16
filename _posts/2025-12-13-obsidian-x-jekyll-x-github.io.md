@@ -11,10 +11,10 @@ image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsi
 - 編輯文章 > 自動 commit & push > github action build jekyll > 更新 github.io
 
 
-以下紀錄如何用 macos & ios obsidian 的第三方插件去完成跨裝置、並且隨時隨地的編輯自己的 github.io 。
+以下記錄如何用 macOS 與 iOS 的 Obsidian 第三方插件，完成跨裝置同步並隨時隨地編輯自己的 github.io。
 
 ## Git
-在 obsidian 如果要完成跨裝置同步的功能，本文章的做法是統一上傳到 github ，並且透過插件去自動 commit、push、pull，以下紀錄安裝步驟。
+在 Obsidian 中如果要完成跨裝置同步的功能，本文的做法是統一上傳到 GitHub，並透過插件自動 commit、push、pull，以下記錄安裝步驟。
 
 ### 安裝
 首先到 obsidian 的設定 > 第三方外掛程式 > 社群外掛程式
@@ -26,14 +26,14 @@ image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsi
 
 安裝後再到插件裡面設定
 1. 開啟 Auto commit-and-sync after stopping file edits
-2. Auto commit-and-sync interval (minutes) 設定停止編輯幾分鐘後會 commit 並上傳
+2. Auto commit-and-sync interval (minutes) 設定停止編輯多少分鐘後自動 commit 並上傳
 3.  滑到下方的「pull」區塊，把 pull on startup 打開
 
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213225805.png)
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213225810.png)
 
 
-設定完後 obsidian 就會幫你在未編輯的幾分後自動 commit & push 了，因為有啟用 Pull on startup 的關係，也不用擔心同步的問題。
+設定完成後，Obsidian 就會在停止編輯幾分鐘後自動 commit & push。因為有啟用 Pull on startup，也不用擔心同步的問題。
 
 ## Custom Attachment Location
 
@@ -49,7 +49,7 @@ image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsi
 ### 安裝
 一樣到 obsidian 的設定 > 第三方外掛程式 > 社群外掛程式，搜尋 Custom Attachment Location 並且安裝。
 
-你有極大的可能出現這畫面，不曉得為什麼沒辦法手動去修改參數。
+你很有可能會看到這個畫面，不知道為什麼無法手動修改參數。
 
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251213224444.png)
 
@@ -108,7 +108,7 @@ image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsi
 
 ### obsidian sync
 
-Ios 手機的做法：
+iOS 手機的做法：
 - mac airdrop 專案給手機
 - 手機指定儲存到 obsidian 資料夾內
 
@@ -118,11 +118,11 @@ Ios 手機的做法：
 - Working Copy app (20 鎂買斷) 
 - 每個月花 8 鎂給 obsidian
 
-另外兩種方式也可以試試看，手機 obsidian vaults 可以開啟後就可以接著以下設定。
+另外兩種方式也可以試試看。手機 Obsidian 開啟 vault 後，就可以接著進行以下設定。
 
 ### Github 設定
 
-先到 ios obsidian 第三方插件 Git 設定 「Authenticcation/commit author」
+先到 iOS Obsidian 第三方插件 Git 設定「Authentication/commit author」
 
 
 ![500](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214001301.png)
@@ -141,7 +141,7 @@ token 到期日自己設定、把 repo 打勾，並送出即可。
 
 記得把 token 貼到 Git 第三方插件裡面
 
-設定完後手機就會自動 sync & push github 了
+設定完成後，手機就會自動 sync & push 到 GitHub 了
 ![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214114309.jpeg)
 
 

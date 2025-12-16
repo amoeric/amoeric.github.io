@@ -6,7 +6,7 @@ image: assets/images/8.jpg
 tags: [MySQL, Homebrew, Mac]
 ---
 
-既專案使用 mysql@5.6 後，新專案需要安裝 mysql 最新版本，透過 brew services 切換版本需要以下設定
+舊專案使用 mysql@5.6，新專案需要安裝 mysql 最新版本，透過 brew services 切換版本需要以下設定
 
 步驟如下：
 

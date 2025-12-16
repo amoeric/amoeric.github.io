@@ -8,7 +8,7 @@ tags:
   - giscus
 ---
 
-之前寫過一篇 [Disqus 的安裝教學]({% post_url 2020-08-18-disqus-setup %})，但後來發現 Disqus 免費版會顯示廣告，對讀者體驗不太好。最近發現了 Giscus 這個替代方案，完全免費、無廣告，而且是基於 GitHub Discussions，對工程師來說超方便！在此紀錄安裝過程。
+之前寫過一篇 [Disqus 的安裝教學]({% post_url 2020-08-18-disqus-setup %})，但後來發現 Disqus 免費版會顯示廣告，對讀者體驗不太好。最近發現了 Giscus 這個替代方案，完全免費、無廣告，而且是基於 GitHub Discussions，對工程師來說超方便！在此記錄安裝過程。
 
 # Giscus 是什麼？
 

@@ -207,7 +207,7 @@ AWS 官方文件
 
 ## AWS
 
-### Secrects Manager
+### Secrets Manager
 - [什麼是 AWS Secrets Manager？](https://docs.aws.amazon.com/zh_tw/secretsmanager/latest/userguide/intro.html)
 - [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/zh_tw/systems-manager/latest/userguide/systems-manager-parameter-store.html)
 - [AWS Secrets Manager vs Systems Manager Parameter Store](https://tutorialsdojo.com/aws-secrets-manager-vs-systems-manager-parameter-store/)
