@@ -154,3 +154,66 @@ $(function() {
         }, 500);
     });
 });
+
+// Code blocks: line numbers + copy button + language header
+$(function() {
+    $('.highlighter-rouge').each(function() {
+        var block = $(this);
+        var codeEl = block.find('pre.highlight code');
+        if (!codeEl.length) return;
+
+        // Detect language from class
+        var lang = '';
+        var classes = block.attr('class') || '';
+        var match = classes.match(/language-(\S+)/);
+        if (match) lang = match[1];
+
+        // Count lines from text content
+        var textContent = codeEl.text();
+        var lines = textContent.split('\n');
+        if (lines.length > 0 && lines[lines.length - 1].trim() === '') {
+            lines.pop();
+        }
+
+        // Build line numbers string (plain text, newline-separated)
+        var nums = [];
+        for (var i = 1; i <= lines.length; i++) {
+            nums.push(i);
+        }
+        var lineNumsEl = $('<pre class="code-line-nums" aria-hidden="true"></pre>').text(nums.join('\n'));
+
+        // Build new structure:
+        // .code-block-wrapper
+        //   .code-header  (lang + copy btn)
+        //   .code-body    (flex: line-nums + original pre)
+        var wrapper = $('<div class="code-block-wrapper"></div>');
+        var header = $('<div class="code-header"></div>');
+        var langLabel = $('<span class="code-lang"></span>').text(lang || 'code');
+        var copyBtn = $('<button class="code-copy-btn"><i class="fas fa-copy"></i> 複製</button>');
+        header.append(langLabel).append(copyBtn);
+
+        var body = $('<div class="code-body"></div>');
+        var pre = block.find('pre.highlight');
+
+        block.before(wrapper);
+        body.append(lineNumsEl);
+        body.append(pre);
+        wrapper.append(header).append(body);
+
+        // Remove the now-empty highlighter-rouge div
+        block.remove();
+
+        // Copy functionality
+        copyBtn.on('click', function() {
+            var text = codeEl.text();
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function() {
+                    copyBtn.addClass('copied').html('<i class="fas fa-check"></i> 已複製');
+                    setTimeout(function() {
+                        copyBtn.removeClass('copied').html('<i class="fas fa-copy"></i> 複製');
+                    }, 2000);
+                });
+            }
+        });
+    });
+});
