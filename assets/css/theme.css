@@ -105,6 +105,8 @@ a:hover {
   display: flex;
   align-items: center;
   height: 100%;
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
 }
 
 .navbar-brand {
@@ -995,7 +997,9 @@ pre.highlight code {
   display: flex;
   gap: var(--space-2);
   flex-wrap: wrap;
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
 }
 
 .article-tags a {
@@ -1037,9 +1041,12 @@ pre.highlight code {
   align-items: center;
   gap: var(--space-5);
   padding: var(--space-6);
-  background: var(--color-bg);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-7);
+  position: relative;
+  overflow: hidden;
 }
 
 .author-box img {
@@ -1073,8 +1080,9 @@ pre.highlight code {
 
 /* Comments */
 #comments {
-  padding-top: var(--space-6);
+  padding-top: var(--space-7);
   margin-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
 }
 
 #comments h4 {
@@ -1083,17 +1091,25 @@ pre.highlight code {
   margin-bottom: var(--space-5);
 }
 
+/* Giscus widget styling */
+.giscus,
+.giscus-frame {
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
 /* Post navigation (prev/next) */
 .post-nav {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: var(--space-5);
-  padding: var(--space-6) 0;
-  border-top: 1px solid var(--color-border);
   margin-top: var(--space-7);
-  max-width: var(--content-width);
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: var(--space-7);
+  padding: var(--space-5);
+  position: relative;
+  z-index: 1;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
 }
 
 .post-nav a {
@@ -1102,12 +1118,19 @@ pre.highlight code {
   font-weight: 500;
   color: var(--color-text);
   text-decoration: none;
-  transition: color var(--transition);
-  max-width: 48%;
+  transition: all var(--transition);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: block;
+  line-height: 1.5;
+  background: var(--color-surface);
 }
 
 .post-nav a:hover {
   color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
 }
 
 .post-nav .nav-label {
@@ -1115,13 +1138,12 @@ pre.highlight code {
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
   display: block;
 }
 
 .post-nav .nav-next {
   text-align: right;
-  margin-left: auto;
 }
 
 /* ==========================================
@@ -1449,11 +1471,7 @@ body {
   }
 
   .post-nav {
-    flex-direction: column;
-  }
-
-  .post-nav a {
-    max-width: 100%;
+    grid-template-columns: 1fr;
   }
 
   .page-title {

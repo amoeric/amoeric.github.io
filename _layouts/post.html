@@ -69,6 +69,28 @@ layout: default
         </div>
         {% endif %}
 
+        <!-- Post Navigation -->
+        {% if page.previous.url or page.next.url %}
+        <nav class="post-nav">
+            {% if page.previous.url %}
+            <a href="{{ site.baseurl }}{{ page.previous.url }}">
+                <span class="nav-label">&larr; Previous</span>
+                {{ page.previous.title }}
+            </a>
+            {% else %}
+            <span></span>
+            {% endif %}
+            {% if page.next.url %}
+            <a class="nav-next" href="{{ site.baseurl }}{{ page.next.url }}">
+                <span class="nav-label">Next &rarr;</span>
+                {{ page.next.title }}
+            </a>
+            {% else %}
+            <span></span>
+            {% endif %}
+        </nav>
+        {% endif %}
+
         <!-- Comments -->
         {% if page.comments != false %}
             {% include comments.html %}
@@ -77,23 +99,3 @@ layout: default
     </div>
 
 </div>
-
-<!-- Post Navigation -->
-{% if page.previous.url or page.next.url %}
-<div class="article-wrapper">
-    <nav class="post-nav">
-        {% if page.previous.url %}
-        <a href="{{ site.baseurl }}{{ page.previous.url }}">
-            <span class="nav-label">&larr; Previous</span>
-            {{ page.previous.title }}
-        </a>
-        {% endif %}
-        {% if page.next.url %}
-        <a class="nav-next" href="{{ site.baseurl }}{{ page.next.url }}">
-            <span class="nav-label">Next &rarr;</span>
-            {{ page.next.title }}
-        </a>
-        {% endif %}
-    </nav>
-</div>
-{% endif %}
