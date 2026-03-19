@@ -4,17 +4,32 @@ layout: default
 permalink: "/posts.html"
 ---
 
-<div class="container px-3 px-md-0">
-    <div class="row">
-        <div class="col-12">
-        <h1 class="font-weight-bold title h6 text-uppercase mb-4">All Posts</h1>
+<div class="page-wrapper">
+    <h1 class="page-title">All Posts</h1>
 
-        {% for post in site.posts %}
-        {% if post.title != null %}
-            {% include main-loop-card.html %}
-        {% endif %}
-        {% endfor %}
-
-        </div>
+    {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+    {% for year in posts_by_year %}
+    <div class="year-group">
+        <h2 class="year-heading">{{ year.name }}</h2>
+        <ul class="year-post-list">
+            {% for post in year.items %}
+            {% if post.title != null %}
+            <li class="year-post-item">
+                <span class="year-post-date">{{ post.date | date: '%m-%d' }}</span>
+                <span class="year-post-title">
+                    <a href="{{site.baseurl}}{{post.url}}">{{ post.title }}</a>
+                </span>
+                {% if post.tags.size > 0 %}
+                <span class="year-post-tags">
+                    {% for tag in post.tags limit:2 %}
+                    <a class="post-card__tag" href="{{site.baseurl}}/tags.html#{{ tag | downcase }}">{{ tag }}</a>
+                    {% endfor %}
+                </span>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
     </div>
+    {% endfor %}
 </div>
