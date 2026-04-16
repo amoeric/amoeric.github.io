@@ -103,26 +103,42 @@ image: ../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsi
   - 檔名格式：筆記名稱-時間戳.png
   - Markdown 路徑使用 ../assets/images/...，讓 Obsidian 和 Jekyll 都能正確顯示圖片
 
+## 手機版的同步設定
 
-## 手機端
+總共有三種方式可以同步：
+1. 透過 git plugin
+2. Working Copy app (20 鎂買斷) 
+3. 每個月花 8 鎂給 obsidian
 
-### obsidian sync
+在這裡我們使用 git 同步，
+在設定之前，需要先了解 Obsidian 怎麼認定這個資料夾是 Valut。
 
-iOS 手機的做法：
-- mac airdrop 專案給手機
-- 手機指定儲存到 obsidian 資料夾內
+### Valut 的認定邏輯
 
-做完後就可以在 obsidian vaults 找到專案了
+在選擇某個資料夾當作 valut 使用後，透過 ls -al 可以發現多了一個 `.obsidian` 的資料夾
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20260417021649.png)
 
-另外兩種方式：
-- Working Copy app (20 鎂買斷) 
-- 每個月花 8 鎂給 obsidian
+裡面存放了一些相關設定
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20260417021654.png)
+### 前置作業
 
-另外兩種方式也可以試試看。手機 Obsidian 開啟 vault 後，就可以接著進行以下設定。
+在手機版，我們需要先先 Create new vault
+
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20260417021130.png)
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20260417021140.png)
+
+建立好後回到 icloud 中，可以看到一個 Obsidian 資料夾
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20260417021144.png)
+
+接著把桌機中建立好的 valut airdrop 到 obsidian 資料夾就可以看到對應的 valut 了
+
+![](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20260417021130.png)
+
+
 
 ### Github 設定
 
-先到 iOS Obsidian 第三方插件 Git 設定「Authentication/commit author」
+到 Obsidian 第三方插件 Git 設定「Authentication/commit author」
 
 
 ![500](../assets/images/2025-12-13-obsidian-x-jekyll-x-github.io/2025-12-13-obsidian-x-jekyll-x-github.io-20251214001301.png)
